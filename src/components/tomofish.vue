@@ -61,6 +61,14 @@ function GoClickFish() {
     if (eat_bar.value != 0) {
         eat_bar.value -= 10
 
+        if (filter_bar.value != 100) {
+            filter_bar.value += 10
+            filter_fon.value -= 9
+
+        } else {
+            random_x.value = Math.random() * 20 - 15
+            random_y.value = Math.random() * 20 - 15
+        }
 
         if ((fish_x.value + random_x.value) <= 900 && (fish_x.value + random_x.value) >= 0) {
             fish_x.value += random_x.value
