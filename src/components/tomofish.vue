@@ -57,6 +57,7 @@ function clear() {
 function GoClickFish() {
     random_x.value = Math.random() * 200 - 150
     random_y.value = Math.random() * 200 - 150
+    random_a.value = Math.random() * 15 - 10
 
     if (eat_bar.value != 0) {
         eat_bar.value -= 10
