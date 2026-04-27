@@ -17,6 +17,11 @@ const filter_bar = ref(0)
 const filter_fon = ref(100)
 const filter_color = ref('#12ce12')
 
+const flag = ref(false)
+const fish_x_clone = ref(400);
+const fish_y_clone = ref(500);
+
+
 function check() {
     if (filter_bar.value >= 30) {
         filter_color.value = 'yellow'
@@ -39,6 +44,13 @@ function check() {
     }
 }
 
+function clone() {
+    flag.value = !flag.value
+    const timer = setTimeout(() => { flag.value = !flag.value }, 8000)
+    // console.log(flag.value);
+
+}
+
 function eat() {
     if (eat_bar.value <= 90) {
         eat_bar.value += 10
@@ -51,6 +63,26 @@ function clear() {
     filter_bar.value = 0
     filter_fon.value = 100
     check()
+
+}
+
+
+function GoClickFishClone() {
+    random_x.value = Math.random() * 200 - 150
+    random_y.value = Math.random() * 200 - 150
+
+    if ((fish_x_clone.value + random_x.value) <= 900 && (fish_x_clone.value + random_x.value) >= 0) {
+        fish_x_clone.value += random_x.value
+
+    } else {
+        fish_x_clone.value = 100
+    }
+
+    if ((fish_y_clone.value + random_y.value) <= 1000 && (fish_y_clone.value + random_y.value) >= 0) {
+        fish_y_clone.value += random_y.value
+    } else {
+        fish_y_clone.value = 100
+    }
 
 }
 
@@ -161,6 +193,9 @@ setInterval(GoFish, 8000);
         <div class="acvar">
             <div class="fish" @click="GoClickFish()"> <img src="../assets/fish.jpg" alt=""></div>
 
+            <div class="fish_clone" @click="GoClickFishClone()" v-if="flag"> <img src="../assets/fish.jpg" alt=""></div>
+
+
         </div>
         <div class="flex">
             <label for="">
@@ -170,6 +205,10 @@ setInterval(GoFish, 8000);
                 <div class="btn" @click="clear()"><img src="../assets/filter.webp" alt=""></div><strong>Почистить
                     фильтр</strong>
             </label>
+            <label for="" v-if="!flag">
+                <div class="btn" @click="clone()" ><img src="../assets/i.webp" alt=""></div><strong>Клонирование</strong>
+            </label>
+            <h2 v-if="flag">Клон живёт 8 секунд и не тратит энергию!!</h2>
         </div>
     </main>
 
@@ -211,7 +250,7 @@ main {
 .fish img {
     max-width: 160px;
     min-height: 150px;
-    mix-blend-mode: multiply;
+    /* mix-blend-mode: multiply; */
 }
 
 .btn {
@@ -267,4 +306,28 @@ main {
     padding: 20px;
     box-shadow: 2px 2px 4px black;
 }
+
+
+.fish_clone {
+    width: 150px;
+    height: 140px;
+    border: 2px solid black;
+    position: relative;
+    top: v-bind(fish_y_clone + 'px');
+    left: v-bind(fish_x_clone + 'px');
+    background: rgb(255, 255, 255);
+    border-radius: 100%;
+    background-size: cover;
+    overflow: hidden;
+    transition: 1.6s;
+    cursor: pointer;
+}
+
+.fish_clone img {
+    max-width: 160px;
+    min-height: 150px;
+    /* mix-blend-mode: multiply; */
+}
+
+
 </style>
