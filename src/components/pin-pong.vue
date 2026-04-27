@@ -183,7 +183,7 @@ setInterval(go, 8)
     color: aliceblue;
     text-shadow: 0 5px 20px rgb(255, 255, 255);
     box-shadow: 0 5px 20px rgb(255, 255, 255);
-    max-width: 60px;
+    max-width: 100px;
     position: relative;
     left: 50%;
     border-radius: 20%;
