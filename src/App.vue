@@ -31,7 +31,7 @@
         </RouterLink>
         <RouterLink :to="{name: 'football'}">
             <div class="card">
-            <div class="img"></div>
+            <div class="img_football"></div>
             <div class="opisanie">Футик</div>
 
             </div>
@@ -90,6 +90,14 @@ a:hover {
 
 .img_ping{
     background-image: url(assets/luna.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100px;
+}
+
+.img_football{
+    background-image: url(assets/img/pole.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;

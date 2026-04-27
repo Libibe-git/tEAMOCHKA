@@ -74,7 +74,44 @@ onMounted(() => {
             <div class="crug" :style="ballStyle"></div>
 
             <!-- Ворота -->
-            <div class="vorota"></div>
+            <div class="vorota">
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+                <div class="setka"></div>
+            </div>
         </div>
     </div>
 </template>
@@ -109,6 +146,9 @@ onMounted(() => {
     background-color: #7bed9f;
     position: relative;
     overflow: hidden;
+    background-image: url(../assets/img/pole.png);
+    background-size: cover;
+    background-position: 90% 80%;
 }
 
 .crug {
@@ -119,10 +159,13 @@ onMounted(() => {
     border-radius: 50%;
     position: absolute;
     transition: background 0.2s;
+    background-image: url(../assets/img/ball.jpeg);
+    background-size: 150% 150%;
+    background-position: 50%;
 }
 
 .vorota {
-    width: 20px;
+    width: 25px;
     height: 100px;
     background: rgba(255, 255, 255, 0.5);
     border: 3px solid white;
@@ -130,5 +173,13 @@ onMounted(() => {
     position: absolute;
     right: 0;
     top: 150px; /* По центру вертикали */
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.setka{
+    width: 5px;
+    height: 5px;
+    border: 2px solid rgba(95, 95, 95, 0.644);
 }
 </style>
