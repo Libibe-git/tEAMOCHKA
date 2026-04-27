@@ -4,8 +4,13 @@ import { ref } from 'vue';
 const fish_x = ref(400);
 const fish_y = ref(200);
 
+function GoFish() {
+    fish_x.value += Math.random()* 200 - 150
+    fish_y.value += Math.random()* 200 - 150
 
+}
 
+setInterval(GoFish, 5000);
 
 </script>
 
@@ -42,6 +47,7 @@ const fish_y = ref(200);
     background: rgb(255, 255, 255);
     border-radius: 100%;
     overflow: hidden;
+    transition: 1s;
 }
 
 .fish img {
