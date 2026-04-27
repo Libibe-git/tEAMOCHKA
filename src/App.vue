@@ -8,7 +8,7 @@
     </div>
     <div class="flex">
         <RouterLink :to="{ name: 'page1' }">Первая страница</RouterLink>
-        <RouterLink :to="{ name: 'page2' }">Вторая страница</RouterLink>
+        <RouterLink :to="{ name: 'tomofish' }">Томогочи</RouterLink>
         <RouterLink :to="{ name: 'page3' }">Третья страница</RouterLink>
 
     </div>
