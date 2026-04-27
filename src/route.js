@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import page1 from './components/page1.vue'
+import Main_page from './components/Main_page.vue'
 import tomofish from './components/tomofish.vue'
-import page3 from './components/page3.vue'
+import pin_pong from './components/pin-pong.vue'
 
 
 const routes = [
-    {path: '/', component: page1, name: 'page1'},
+    {path: '/', component: Main_page, name: 'Main_page'},
     {path: '/tomofish', component: tomofish, name: 'tomofish'},
-    {path: '/page3', component: page3, name: 'page3'},
+    {path: '/pin_pong', component: pin_pong, name: 'pin_pong'},
 ]
 
 export const router = createRouter({

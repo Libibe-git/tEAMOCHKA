@@ -200,6 +200,7 @@ main {
     border-radius: 100%;
     overflow: hidden;
     transition: 1.6s;
+    cursor: pointer;
 }
 
 .fish img {

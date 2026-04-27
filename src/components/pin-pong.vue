@@ -1,6 +1,7 @@
 <script setup></script>
 <template>
     <div>
-        Текст страницы 3
+        <h1>Пин-Понг</h1>
     </div>
+    
 </template>
