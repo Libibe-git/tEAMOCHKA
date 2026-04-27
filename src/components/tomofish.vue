@@ -54,6 +54,35 @@ function clear() {
 
 }
 
+function GoClickFish() {
+    random_x.value = Math.random() * 200 - 150
+    random_y.value = Math.random() * 200 - 150
+
+    if (eat_bar.value != 0) {
+        eat_bar.value -= 10
+
+
+        if ((fish_x.value + random_x.value) <= 900 && (fish_x.value + random_x.value) >= 0) {
+            fish_x.value += random_x.value
+
+        } else {
+            fish_x.value = 400
+        }
+
+        if ((pos_a.value + random_a.value) <= 100 && (pos_a.value + random_a.value) >= 0) {
+            pos_a.value += random_a.value
+        }
+
+        if ((fish_y.value + random_y.value) <= 1000 && (fish_y.value + random_y.value) >= 0) {
+            fish_y.value += random_y.value
+        } else {
+            fish_y.value = 600
+        }
+    }
+
+    check()
+}
+
 function GoFish() {
     random_x.value = Math.random() * 200 - 150
     random_y.value = Math.random() * 200 - 150
@@ -96,7 +125,7 @@ function GoFish() {
     // console.log(fish_x.value + random_x.value);
 }
 
-setInterval(GoFish, 3500);
+setInterval(GoFish, 8000);
 
 </script>
 
@@ -125,7 +154,7 @@ setInterval(GoFish, 3500);
 
 
         <div class="acvar">
-            <div class="fish"> <img src="../assets/fish.jpg" alt=""></div>
+            <div class="fish" @click="GoClickFish()"> <img src="../assets/fish.jpg" alt=""></div>
 
         </div>
         <div class="flex">
