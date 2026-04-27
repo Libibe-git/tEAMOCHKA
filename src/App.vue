@@ -1,5 +1,8 @@
 <script setup>
+import { useRoute } from 'vue-router';
 
+
+const route = useRoute()
 </script>
 
 <template>
@@ -14,7 +17,7 @@
 
 
     </header>
-    <div class="flex">
+    <div class="flex" v-if="route.name == 'Main_page'">
         <RouterLink :to="{ name: 'tomofish' }">
             <div class="card">
                 <div class="img_fish">
@@ -29,10 +32,10 @@
                 <div class="opisanie">Пин-Понг</div>
             </div>
         </RouterLink>
-        <RouterLink :to="{name: 'football'}">
+        <RouterLink :to="{ name: 'football' }">
             <div class="card">
-            <div class="img_football"></div>
-            <div class="opisanie">Футик</div>
+                <div class="img_football"></div>
+                <div class="opisanie">Футик</div>
 
             </div>
 
@@ -71,16 +74,22 @@ a:hover {
     border-radius: 100%;
 }
 
-.card{
+.card {
     width: 180px;
     min-height: 180px;
     border: 1px solid grey;
     border-radius: 10%;
     padding: 0;
     overflow: hidden;
+    box-shadow: 2px 2px 10px black;
 }
 
-.img_fish{
+.card:hover {
+    transform: translate(-10px, -10px);
+    transition: 1.6s;
+}
+
+.img_fish {
     background-image: url(assets/fish.jpg);
     background-size: cover;
     background-repeat: no-repeat;
@@ -88,7 +97,7 @@ a:hover {
     height: 100px;
 }
 
-.img_ping{
+.img_ping {
     background-image: url(assets/luna.jpg);
     background-size: cover;
     background-repeat: no-repeat;
@@ -96,12 +105,11 @@ a:hover {
     height: 100px;
 }
 
-.img_football{
+.img_football {
     background-image: url(assets/img/pole.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
     height: 100px;
 }
-
 </style>
