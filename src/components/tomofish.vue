@@ -18,8 +18,8 @@ const fish_y = ref(200);
 
     </div>
     <div class="flex">
-        <div class="btn"><img src="../assets/eat.jpg" alt=""></div>
-        <div class="btn"><img src="../assets/filter.webp" alt=""></div>
+        <label for=""><div class="btn"><img src="../assets/eat.jpg" alt=""></div><strong>Покормить</strong></label>
+        <label for=""><div class="btn"><img src="../assets/filter.webp" alt=""></div><strong>Почистить фильтр</strong></label>
     </div>
 </template>
 
