@@ -79,26 +79,26 @@ function go() {
 
 function moveLeftPlatformUp() {
     if (lplat.value > 0) {
-        lplat.value -= 10
+        lplat.value -= 18
     }
 }
 function moveRightPlatformUp() {
     if (rplat.value > 0) {
-        rplat.value -= 10
+        rplat.value -= 18
     }
 }
 
 
 function moveLeftPlatformDown() {
     if (lplat.value < 600) {
-        lplat.value += 10
+        lplat.value += 18
     }
 
 }
 
 function moveRightPlatformDown() {
     if (rplat.value < 600) {
-        rplat.value += 10
+        rplat.value += 18
     }
 }
 
@@ -178,10 +178,12 @@ setInterval(go, 8)
 }
 
 .score {
+    font-size: 30px;
+    padding: 0 5px ;
     color: aliceblue;
     text-shadow: 0 5px 20px rgb(255, 255, 255);
     box-shadow: 0 5px 20px rgb(255, 255, 255);
-    max-width: 40px;
+    max-width: 60px;
     position: relative;
     left: 50%;
     border-radius: 20%;
