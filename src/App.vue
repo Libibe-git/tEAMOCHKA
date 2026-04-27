@@ -24,7 +24,7 @@
         </RouterLink>
         <RouterLink :to="{ name: 'pin_pong' }">
             <div class="card">
-                <div class="img_">
+                <div class="img_ping">
                 </div>
                 <div class="opisanie">Пин-Понг</div>
             </div>
@@ -74,6 +74,14 @@ a:hover {
 
 .img_fish{
     background-image: url(assets/fish.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100px;
+}
+
+.img_ping{
+    background-image: url(assets/luna.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
