@@ -178,8 +178,8 @@ onMounted(() => {
 }
 
 .setka{
-    width: 5px;
-    height: 5px;
+    width: 4px;
+    height: 4px;
     border: 2px solid rgba(95, 95, 95, 0.644);
 }
 </style>
