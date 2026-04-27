@@ -29,6 +29,14 @@
                 <div class="opisanie">Пин-Понг</div>
             </div>
         </RouterLink>
+        <RouterLink :to="{name: 'football'}">
+            <div class="card">
+            <div class="img"></div>
+            <div class="opisanie">Футик</div>
+
+            </div>
+
+        </RouterLink>
     </div>
 
     <RouterView></RouterView>
