@@ -144,14 +144,14 @@ setInterval(GoFish, 8000);
     <main>
         <div class="stats">
             <div class="shadow">
-                <h2>Сытость</h2>
+                <h2>Сытость:</h2>
                 <div class="progress-container">
                     <div class="progress-fill_1"></div>
                 </div>
             </div>
 
             <div class="shadow">
-                <h2>Загрязнение фильтра</h2>
+                <h2>Загрязнение фильтра:</h2>
                 <div class="progress-container">
                     <div class="progress-fill_2"></div>
                 </div>
