@@ -1,6 +1,6 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const router = useRouter();
 // Настройки игры
@@ -11,7 +11,7 @@ const BALL_SIZE = 40;
 const pos = reactive({ x: 50, y: 200 }); // Позиция мяча
 const speed = reactive({ x: 4, y: 4 });  // Скорость (направление)
 const score = ref(0);
-const message = ref('Бей по мячу!');
+// const message = ref('Бей по мячу!');
 
 const ballStyle = computed(() => ({
     left: pos.x + 'px',
@@ -43,9 +43,11 @@ function update() {
             goal();
         }
 
-        requestAnimationFrame(update);
+        
     }
 }
+
+setInterval(update, 10)
 
 function kick() {
     if (gend.value) {
@@ -53,13 +55,13 @@ function kick() {
         // Ускоряем мяч при ударе
         speed.x = Math.random() > 0.5 ? 5 : -5;
         speed.y = Math.random() * 10 - 5;
-        message.value = "Хороший удар!";
+        // message.value = "Хороший удар!";
     }
 }
 
 function goal() {
     score.value++;
-    message.value = "ГООООЛ!!!";
+    // message.value = "ГООООЛ!!!";
     // Сбрасываем мяч в центр
     pos.x = 50;
     pos.y = 200;
@@ -77,7 +79,7 @@ function timer() {
     const timeend = setInterval(() => {
         if (timeLeft.value <= 0) {
             clearInterval(timeend);
-            message.value = 'ИГРА ОКОНЧЕНА !'
+            // message.value = 'ИГРА ОКОНЧЕНА !'
             gend.value = false
             pos.x = 50
             pos.y = 200
@@ -108,84 +110,154 @@ onMounted(() => {
     update();
     timer();
 });
+
+const route = useRoute()
+const styles = ref('#dd8c8c')
+let index = 0
+
+function rColor() {
+    if (route.name == 'football') {
+        let spisok = ref(['#00693f', '#008c54', '#2ed573', '#7bed9f'])
+        styles.value = spisok.value[index]
+
+    } else {
+        styles.value = 'black'
+
+    }
+
+    // console.log(spisok.value[index]);
+    if (index < 2) {
+        index = index + 1
+
+    } else {
+        index = 0
+    }
+
+}
+
+setInterval(rColor, 1000)
+
+
+
 </script>
 
 <template>
-    <div class="game-container" >
-        <div class="g_score">
-            <h2>Счет: {{ score }}</h2>
-            <p>{{ message }}</p>
-            <p>Осталось времени : {{ timeLeft }}</p>
-
-            <button @click="kick" class="kick-btn">УДАР!</button>
+    <div class="fl_1">
+        <div class="name_game">
+            <h1>
+                Футбольчик
+            </h1>
         </div>
+        <div class="fl_2">
+            <div class="game-container">
+                <div class="g_score">
+                    <h2>Счет: {{ score }}</h2>
+                    <p>{{ message }}</p>
+                    <p>Осталось времени : {{ timeLeft }}</p>
+
+                    <button @click="kick" class="kick-btn">УДАР!</button>
+                </div>
 
 
-        <div class="pole">
-            <!-- Мяч -->
-            <div class="crug" :style="ballStyle"></div>
+                <div class="pole">
+                    <!-- Мяч -->
+                    <div class="crug" :style="ballStyle"></div>
 
-            <!-- Ворота -->
-            <div class="vorota">
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
-                <div class="setka"></div>
+                    <!-- Ворота -->
+                    <div class="vorota">
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                        <div class="setka"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" v-if="!gend">
+                <div class="v_modal">
+                    <div class="black">
+                        <h1>Игра окончена !</h1>
+                        <div class="table">
+                            <p class="modal_score">Итоговый счёт : {{ score }}</p>
+                        </div>
+                        <div class="modal_btn">
+                            <button class="btn_modal" @click="restart()">Начать сначала</button>
+                            <button class="btn_modal" @click="router.push({ name: 'Main_page' })">Выйти в главное
+                                меню</button>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="modal" v-if="!gend">
-        <div class="v_modal">
-            <div class="black">
-                <h1>Игра окончена !</h1>
-                <div class="table">
-                    <p class="modal_score">Итоговый счёт : {{ score }}</p>
-                </div>
-                <div class="modal_btn">
-                    <button class="btn_modal" @click="restart()">Начать сначала</button>
-                    <button class="btn_modal" @click="router.push({ name: 'Main_page' })">Выйти в главное меню</button>
-                </div>
-            </div>
 
 
-        </div>
-    </div>
+
 </template>
 
 <style scoped>
+.name_game h1 {
+    color: v-bind(styles);
+    font-family: fantasy;
+    letter-spacing: 2px;
+
+}
+
+.fl_1 {
+    display: flex;
+    flex-direction: column;
+    margin-top: -300px;
+}
+
+.fl_2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.name_game {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-text-stroke: 0.5px black;
+
+
+}
+
 .g_score {
     display: flex;
     flex-direction: column;

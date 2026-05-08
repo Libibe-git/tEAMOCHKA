@@ -1,10 +1,39 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
+import { useRoute } from 'vue-router';
 
 // const goriz = reactive({
 //   horiz: true
 
 // })
+
+
+const route = useRoute()
+const styles = ref('#dd8c8c')
+let index = 0
+
+function rColor() {
+    if (route.name == 'pin_pong') {
+        let spisok = ref(['#00693f', '#008c54', '#2ed573', '#7bed9f'])
+        styles.value = spisok.value[index]
+
+    } else {
+        styles.value = 'black'
+
+    }
+
+    // console.log(spisok.value[index]);
+    if (index < 2) {
+        index = index + 1
+
+    } else {
+        index = 0
+    }
+
+}
+
+setInterval(rColor, 1000)
+
 
 const goriz = reactive({
     ni: false,
@@ -109,6 +138,7 @@ setInterval(go, 8)
 
 <template>
     <main>
+        <h1>Ping-Pong Ultra</h1>
         <div class="pole" tabindex="0" autofocus @keydown.arrow-up.prevent="moveLeftPlatformUp"
             @keydown.arrow-down.prevent="moveLeftPlatformDown" @keydown.w.prevent="moveRightPlatformUp"
             @keydown.s.prevent="moveRightPlatformDown">
@@ -133,6 +163,13 @@ setInterval(go, 8)
 </template>
 
 <style scoped>
+h1 {
+    color: v-bind(styles);
+    font-family: fantasy;
+    letter-spacing: 2px;
+
+}
+
 .pole {
     width: 800px;
     height: 700px;
