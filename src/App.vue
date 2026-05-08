@@ -123,11 +123,8 @@ footer {
     min-height: 10%;
     min-width: 100vw;
     margin: 0;
-    /* bottom: -1000px; */
-    /* left: 0; */
-    /* right: 0; */
-    /* margin-top: 20px; */
-    /* color: white; */
+    margin-top: 10%;
+    
 }
 
 .list_row {
