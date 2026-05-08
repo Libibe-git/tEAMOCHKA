@@ -86,9 +86,7 @@ function timer() {
             speed.x = 0;
             speed.y = 0;
 
-            console.log("Время вышло!");
         } else {
-            console.log(`Осталось: ${timeLeft} сек.`);
             timeLeft.value--;
         }
     }, 1000)

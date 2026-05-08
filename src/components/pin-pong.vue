@@ -1,13 +1,8 @@
 <script setup>
 import { computed, reactive, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
-// const goriz = reactive({
-//   horiz: true
-
-// })
-
-
+const router = useRouter()
 const route = useRoute()
 const styles = ref('#dd8c8c')
 let index = 0
@@ -16,13 +11,9 @@ function rColor() {
     if (route.name == 'pin_pong') {
         let spisok = ref(['rgb(52, 0, 86)', 'rgb(69, 0, 114)', 'rgb(25, 0, 72)', 'rgb(34, 0, 96)'])
         styles.value = spisok.value[index]
-
     } else {
         styles.value = 'black'
-
     }
-
-    // console.log(spisok.value[index]);
     if (index < 2) {
         index = index + 1
 
@@ -52,59 +43,71 @@ const vni = computed(() => righttnum.value + 'px')
 const Lplat = computed(() => lplat.value + 'px')
 const Rplat = computed(() => rplat.value + 'px')
 
-
+const flag = ref(true);
 
 
 function go() {
-    if (goriz.horiz) {
-        leftnum.value++
-    } else {
-        leftnum.value--
-    }
+    if (flag.value) {
+        if (goriz.horiz) {
+            leftnum.value++
+        } else {
+            leftnum.value--
+        }
 
-    if (leftnum.value >= 750) {
-        goriz.horiz = !goriz.horiz
-        // console.log(vni.value);
-        // console.log(leftnum.value);
-    } else if (leftnum.value <= 0) {
-        goriz.horiz = !goriz.horiz
-        // console.log(vni.value);
-        // console.log(leftnum.value);
-    }
-    // console.log(Lplat.value);
-
-    // console.log(vni.value);
-
-    if (leftnum.value <= 40) {
-        if (righttnum.value + 50 >= lplat.value && righttnum.value <= lplat.value + 100) {
-            goriz.horiz = true;
+        if (leftnum.value >= 750) {
+            goriz.horiz = !goriz.horiz
+            // console.log(vni.value);
+            // console.log(leftnum.value);
         } else if (leftnum.value <= 0) {
-            countL.value += 1
+            goriz.horiz = !goriz.horiz
+            // console.log(vni.value);
+            // console.log(leftnum.value);
+        }
+        // console.log(Lplat.value);
 
+        // console.log(vni.value);
+
+        if (leftnum.value <= 40) {
+            if (righttnum.value + 50 >= lplat.value && righttnum.value <= lplat.value + 100) {
+                goriz.horiz = true;
+            } else if (leftnum.value <= 0) {
+                countL.value += 1
+
+            }
+        }
+
+        if (leftnum.value >= 710) {
+            if (righttnum.value + 50 >= rplat.value && righttnum.value <= rplat.value + 100) {
+                goriz.horiz = false;
+            } else if (leftnum.value >= 750) {
+                countR.value += 1
+            }
+        }
+
+        if (goriz.ni) {
+            righttnum.value++
+        } else {
+            righttnum.value--
+        }
+
+        if (righttnum.value >= 650) {
+            goriz.ni = !goriz.ni
+        } else if (righttnum.value <= 0) {
+            goriz.ni = !goriz.ni
         }
     }
 
-    if (leftnum.value >= 710) {
-        if (righttnum.value + 50 >= rplat.value && righttnum.value <= rplat.value + 100) {
-            goriz.horiz = false;
-        } else if (leftnum.value >= 750) {
-            countR.value += 1
-        }
+    if (countL.value >= 1 || countR.value >= 1) {
+        flag.value = false
+        leftnum.value = 300
+        righttnum.value = 100
     }
 
-    if (goriz.ni) {
-        righttnum.value++
-    } else {
-        righttnum.value--
-    }
-
-    if (righttnum.value >= 650) {
-        goriz.ni = !goriz.ni
-    } else if (righttnum.value <= 0) {
-        goriz.ni = !goriz.ni
-    }
+    // console.log(flag.value);
 
 }
+
+
 
 function moveLeftPlatformUp() {
     if (lplat.value > 0) {
@@ -132,16 +135,17 @@ function moveRightPlatformDown() {
 }
 
 
-setInterval(go, 8)
+setInterval(go, 6)
 
 </script>
 
 <template>
-    <main class="flex_col">
+    <main class="flex_col" v-if="flag">
         <h1>Ping-Pong Ultra</h1>
         <div class="pole" tabindex="0" autofocus @keydown.arrow-up.prevent="moveLeftPlatformUp"
             @keydown.arrow-down.prevent="moveLeftPlatformDown" @keydown.w.prevent="moveRightPlatformUp"
-            @keydown.s.prevent="moveRightPlatformDown" @keydown.ц.prevent="moveRightPlatformUp" @keydown.ы.prevent="moveRightPlatformDown">
+            @keydown.s.prevent="moveRightPlatformDown" @keydown.ц.prevent="moveRightPlatformUp"
+            @keydown.ы.prevent="moveRightPlatformDown">
             <div class="platforma" :style="{ top: Lplat }">
             </div>
 
@@ -159,10 +163,74 @@ setInterval(go, 8)
         </div>
     </main>
 
+    <div class="modal" v-if="!flag">
+        <div class="v_model">
+            <h1>Конец Игры !</h1>
+            <p>Итоговый счёт {{ countL }} : {{ countR }}</p>
+            <div class="model_btn">
+                <button class="btn1">Играть</button>
+                <button class="btn1" @click="router.push({ name: 'Main_page' })">На главную</button>
+            </div>
+        </div>
+    </div>
+
 
 </template>
 
 <style scoped>
+.model {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(30, 30, 30, 0.448);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.v_model {
+    background-color: rgb(0, 0, 59);
+    color: white;
+    width: 500px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    border: 0px solid white;
+    border-radius: 10px;
+}
+
+.model_btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    color: rgb(0, 0, 55);
+}
+
+.btn1 {
+    max-height: 42px;
+    transition: 1s;
+
+}
+
+.btn1:hover {
+    background-color: rgb(56, 56, 124);
+    color: white;
+    width: 120px;
+    max-height: 55px;
+    height: 80px;
+    border: 1px solid white;
+}
+
+.btn2:hover {
+    background-color: rgb(56, 56, 124);
+    color: white;
+    padding: 15px;
+    transition: 1s;
+    border: 1px solid white;
+}
+
 .flex_col {
     display: flex;
     flex-direction: column;
@@ -174,6 +242,19 @@ h1 {
     font-family: fantasy;
     letter-spacing: 2px;
 
+}
+
+p {
+    font-size: 30px;
+    margin-top: -1px;
+    margin-bottom: 50px;
+}
+
+.v_model h1 {
+    color: v-bind(styles);
+    font-family: fantasy;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 0.5px white;
 }
 
 .pole {
