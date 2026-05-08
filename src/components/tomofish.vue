@@ -1,5 +1,8 @@
 <script setup>
-import { ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter()
 
 const fish_x = ref(400);
 const fish_y = ref(200);
@@ -11,15 +14,34 @@ const random_a = ref(0)
 
 const eat_bar = ref(100)
 const eat_color = ref('#12ce12')
-
+const eat_text = ref('')
 
 const filter_bar = ref(0)
 const filter_fon = ref(100)
 const filter_color = ref('#12ce12')
+const filter_text = ref('')
 
 const flag = ref(false)
 const fish_x_clone = ref(400);
 const fish_y_clone = ref(500);
+
+const end_time = ref(0)
+const end_time_interval = ref()
+const modal = ref(false)
+
+onMounted(() => {
+    end_time_interval.value = setInterval(() => { end_time.value++ }, 1000)
+
+})
+
+
+
+function end_timer() {
+    clearInterval(end_time_interval.value)
+    end_time_interval.value = ''
+    modal.value = true
+}
+
 
 
 function check() {
@@ -28,6 +50,8 @@ function check() {
     }
     if (filter_bar.value >= 60) {
         filter_color.value = 'red'
+        filter_text.value = 'Пока фильтр грязный рыбка плохо видит куда плыть!!!'
+
     }
     if (filter_bar.value < 30) {
         filter_color.value = '#12ce12'
@@ -35,17 +59,25 @@ function check() {
 
     if (eat_bar.value <= 60) {
         eat_color.value = 'yellow'
+        eat_text.value = ''
+
     }
     if (eat_bar.value <= 30) {
         eat_color.value = 'red'
+        eat_text.value = 'Срочно покормите рыбку!!!'
     }
     if (eat_bar.value >= 70) {
         eat_color.value = '#12ce12'
+    }
+
+    if (eat_bar.value == 0 && filter_bar.value == 100) {
+        end_timer()
     }
 }
 
 function clone() {
     flag.value = !flag.value
+
     const timer = setTimeout(() => { flag.value = !flag.value }, 8000)
     // console.log(flag.value);
 
@@ -129,7 +161,6 @@ function GoFish() {
     if (filter_bar.value != 100) {
         filter_bar.value += 10
         filter_fon.value -= 9
-
     } else {
         random_x.value = Math.random() * 20 - 15
         random_y.value = Math.random() * 20 - 15
@@ -177,14 +208,16 @@ setInterval(GoFish, 8000);
                 <div class="progress-container">
                     <div class="progress-fill_1"></div>
                 </div>
-            </div>
 
+            </div>
+            <h2 class="danger_text">{{ eat_text }}</h2>
             <div class="shadow">
                 <h2>Загрязнение фильтра:</h2>
                 <div class="progress-container">
                     <div class="progress-fill_2"></div>
                 </div>
             </div>
+            <h2 class="danger_text">{{ filter_text }}</h2>
 
 
         </div>
@@ -206,12 +239,18 @@ setInterval(GoFish, 8000);
                     фильтр</strong>
             </label>
             <label for="" v-if="!flag">
-                <div class="btn" @click="clone()" ><img src="../assets/i.webp" alt=""></div><strong>Клонирование</strong>
+                <div class="btn" @click="clone()"><img src="../assets/i.webp" alt=""></div><strong>Клонирование</strong>
             </label>
             <h2 v-if="flag">Клон живёт 8 секунд и не тратит энергию!!</h2>
         </div>
     </main>
+    <div class="modal" v-if="modal">
+        <div class="the_end">
+            <h1 class="suc_text">Игра окончена рыбка прожила {{ end_time }} секунд</h1>
+            <button @click="router.push({ name: tomofish })">Начать занаво</button>
+        </div>
 
+    </div>
 </template>
 
 <style scoped>
@@ -329,5 +368,25 @@ main {
     /* mix-blend-mode: multiply; */
 }
 
+.danger_text {
+    color: red;
+}
 
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.726);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.the_end{
+    max-width: 600px;
+    height: 400px;
+}
 </style>

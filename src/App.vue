@@ -7,9 +7,15 @@ const styles = ref('#dd8c8c')
 let index = 0
 
 function rColor() {
-    let spisok = ref(['orange', 'blue', 'green', 'grey'])
+    if (route.name == 'Main_page') {
+        let spisok = ref(['orange', 'blue', 'green', 'grey'])
+        styles.value = spisok.value[index]
 
-    styles.value = spisok.value[index]
+    }else{
+        styles.value = 'black'
+
+    }
+
     // console.log(spisok.value[index]);
     if (index < 2) {
         index = index + 1
@@ -36,11 +42,10 @@ const route = useRoute()
             </div>
         </RouterLink>
     </header>
-    <main>
-        <div v-if="route.name == 'Main_page'">
-            <div>
-                <h1>Добро пожаловать, приятной игры</h1>
-            </div>
+    <div v-if="route.name == 'Main_page'" class="welcome">
+        <div>
+            <h1>Добро пожаловать, приятной игры</h1>
+        </div>
 
             <div class="text_contain">
                 <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться
@@ -236,7 +241,7 @@ a:hover {
     background-position: 100%
 }
 
-h1 {
+.welcome h1 {
     color: v-bind(styles);
     font-family: fantasy;
     letter-spacing: 2px;
