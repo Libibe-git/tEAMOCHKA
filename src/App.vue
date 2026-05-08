@@ -7,9 +7,15 @@ const styles = ref('#dd8c8c')
 let index = 0
 
 function rColor() {
-    let spisok = ref(['orange', 'blue', 'green', 'grey'])
+    if (route.name == 'Main_page') {
+        let spisok = ref(['orange', 'blue', 'green', 'grey'])
+        styles.value = spisok.value[index]
 
-    styles.value = spisok.value[index]
+    } else {
+        styles.value = 'black'
+
+    }
+
     // console.log(spisok.value[index]);
     if (index < 2) {
         index = index + 1
@@ -36,46 +42,45 @@ const route = useRoute()
             </div>
         </RouterLink>
     </header>
-    <main>
-        <div v-if="route.name == 'Main_page'">
-            <div>
-                <h1>Добро пожаловать, приятной игры</h1>
-            </div>
-
-            <div class="text_contain">
-                <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться
-                    игрой.
-                    Выбирай своё приключение на сегодня!»</p>
-            </div>
+    <div v-if="route.name == 'Main_page'" class="welcome">
+        <div>
+            <h1>Добро пожаловать, приятной игры</h1>
         </div>
 
-        <div class="flex" v-if="route.name == 'Main_page'">
-            <RouterLink :to="{ name: 'tomofish' }">
-                <div class="card">
-                    <div class="img_fish">
-                    </div>
-                    <div class="opisanie-t">Томогочи-fish</div>
-                </div>
-            </RouterLink>
-            <RouterLink :to="{ name: 'pin_pong' }">
-                <div class="card">
-                    <div class="img_ping">
-                    </div>
-                    <div class="opisanie-p">Пин-Понг</div>
-                </div>
-            </RouterLink>
-            <RouterLink :to="{ name: 'football' }">
-                <div class="card">
-                    <div class="img_football"></div>
-                    <div class="opisanie-f">Футик</div>
-
-                </div>
-
-            </RouterLink>
+        <div class="text_contain">
+            <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться
+                игрой.
+                Выбирай своё приключение на сегодня!»</p>
         </div>
+    </div>
 
-        <RouterView></RouterView>
-    </main>
+    <div class="flex" v-if="route.name == 'Main_page'">
+        <RouterLink :to="{ name: 'tomofish' }">
+            <div class="card">
+                <div class="img_fish">
+                </div>
+                <div class="opisanie-t">Томогочи-fish</div>
+            </div>
+        </RouterLink>
+        <RouterLink :to="{ name: 'pin_pong' }">
+            <div class="card">
+                <div class="img_ping">
+                </div>
+                <div class="opisanie-p">Пин-Понг</div>
+            </div>
+        </RouterLink>
+        <RouterLink :to="{ name: 'football' }">
+            <div class="card">
+                <div class="img_football"></div>
+                <div class="opisanie-f">Футик</div>
+
+            </div>
+
+        </RouterLink>
+    </div>
+
+    <RouterView></RouterView>
+    
 
 
     <footer>
@@ -236,7 +241,7 @@ a:hover {
     background-position: 100%
 }
 
-h1 {
+.welcome h1 {
     color: v-bind(styles);
     font-family: fantasy;
     letter-spacing: 2px;
@@ -256,7 +261,7 @@ h2 {
     margin-bottom: 40px;
 }
 
-main{
+main {
     min-height: 100vh;
     display: flex;
     align-items: center;
