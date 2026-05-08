@@ -187,6 +187,8 @@ onMounted(() => {
     height: 350px;
     display: flex;
     flex-direction: column;
+    border: 0px solid white;
+    border-radius: 10px;
 
 }
 
@@ -205,6 +207,7 @@ onMounted(() => {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    margin-top: 20px;
 }
 
 .btn_modal{
