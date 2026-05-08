@@ -108,25 +108,27 @@ setInterval(go, 8)
 </script>
 
 <template>
+    <main>
+        <div class="pole" tabindex="0" autofocus @keydown.arrow-up.prevent="moveLeftPlatformUp"
+            @keydown.arrow-down.prevent="moveLeftPlatformDown" @keydown.w.prevent="moveRightPlatformUp"
+            @keydown.s.prevent="moveRightPlatformDown">
+            <div class="platforma" :style="{ top: Lplat }">
+            </div>
 
-    <div class="pole" tabindex="0" autofocus @keydown.arrow-up.prevent="moveLeftPlatformUp"
-        @keydown.arrow-down.prevent="moveLeftPlatformDown" @keydown.w.prevent="moveRightPlatformUp"
-        @keydown.s.prevent="moveRightPlatformDown">
-        <div class="platforma" :style="{ top: Lplat }">
+            <div class="platforma2" :style="{ top: Rplat }">
+            </div>
+            <div class="crug" :style="{ left: vper, top: vni }">
+            </div>
+
+            <div class="score">
+                <h4>{{ countR }} : {{ countL }}</h4>
+
+
+            </div>
+
         </div>
+    </main>
 
-        <div class="platforma2" :style="{ top: Rplat }">
-        </div>
-        <div class="crug" :style="{ left: vper, top: vni }">
-        </div>
-
-        <div class="score">
-            <h4>{{ countR }}  : {{ countL }}</h4>
-
-
-        </div>
-
-    </div>
 
 </template>
 
@@ -141,6 +143,8 @@ setInterval(go, 8)
     background-repeat: no-repeat;
     background-size: 100% 150%;
     overflow: hidden;
+    border-radius: 1%;
+    box-shadow: 4px 10px 18px black;
 }
 
 .crug {
@@ -179,13 +183,13 @@ setInterval(go, 8)
 
 .score {
     font-size: 30px;
-    padding: 0 5px ;
+    padding: 0 5px;
     color: aliceblue;
     text-shadow: 0 5px 20px rgb(255, 255, 255);
     box-shadow: 0 5px 20px rgb(255, 255, 255);
     max-width: 100px;
     position: relative;
-    left: 50%;
+    left: 45%;
     border-radius: 20%;
 }
 </style>

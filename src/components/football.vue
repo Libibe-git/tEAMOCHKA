@@ -9,7 +9,7 @@ const FIELD_HEIGHT = 500;
 const BALL_SIZE = 40;
 
 const pos = reactive({ x: 50, y: 200 }); // Позиция мяча
-const speed = reactive({ x: 2, y: 2 });  // Скорость (направление)
+const speed = reactive({ x: 4, y: 4 });  // Скорость (направление)
 const score = ref(0);
 const message = ref('Бей по мячу!');
 
@@ -39,7 +39,7 @@ function update() {
 
         // Проверка на гол (если мяч в районе ворот у правой стены)
         // Ворота находятся справа (x > 450) и посередине по вертикали
-        if (pos.x > FIELD_WIDTH - BALL_SIZE - 10 && pos.y > 150 && pos.y < 250) {
+        if (pos.x > FIELD_WIDTH - BALL_SIZE - 10 && pos.y > 130 && pos.y < 250) {
             goal();
         }
 
@@ -63,8 +63,8 @@ function goal() {
     // Сбрасываем мяч в центр
     pos.x = 50;
     pos.y = 200;
-    speed.x = 2;
-    speed.y = 2;
+    speed.x = 4;
+    speed.y = 4;
 }
 
 //    console.log(timeend);
@@ -98,8 +98,8 @@ function restart() {
     timeLeft.value = 10
     timer()
     update()
-    speed.x = 2
-    speed.y = 2
+    speed.x = 4
+    speed.y = 4
     score.value = 0;
 
 }
