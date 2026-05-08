@@ -211,51 +211,57 @@ function restart() {
 </script>
 
 <template>
-    <div>
-        <h1>Томогочи-fish</h1>
-    </div>
+
     <main>
-        <div class="stats">
-            <div class="shadow">
-                <h2>Сытость:</h2>
-                <div class="progress-container">
-                    <div class="progress-fill_1"></div>
+        <div>
+            <h1>Томогочи-fish</h1>
+        </div>
+        <div class="game">
+            <div class="stats">
+                <div class="shadow">
+                    <h2>Сытость:</h2>
+                    <div class="progress-container">
+                        <div class="progress-fill_1"></div>
+                    </div>
+
                 </div>
+                <h2 class="danger_text">{{ eat_text }}</h2>
+                <div class="shadow">
+                    <h2>Загрязнение фильтра:</h2>
+                    <div class="progress-container">
+                        <div class="progress-fill_2"></div>
+                    </div>
+                </div>
+                <h2 class="danger_text">{{ filter_text }}</h2>
+
 
             </div>
-            <h2 class="danger_text">{{ eat_text }}</h2>
-            <div class="shadow">
-                <h2>Загрязнение фильтра:</h2>
-                <div class="progress-container">
-                    <div class="progress-fill_2"></div>
+
+
+            <div class="acvar">
+                <div class="fish" @click="GoClickFish()"> <img src="../assets/fish.jpg" alt=""></div>
+
+                <div class="fish_clone" @click="GoClickFishClone()" v-if="flag"> <img src="../assets/fish.jpg" alt="">
                 </div>
+
+
             </div>
-            <h2 class="danger_text">{{ filter_text }}</h2>
-
-
+            <div class="flex">
+                <label for="">
+                    <div class="btn" @click="eat()"><img src="../assets/eat.jpg" alt=""></div><strong>Покормить</strong>
+                </label>
+                <label for="">
+                    <div class="btn" @click="clear()"><img src="../assets/filter.webp" alt=""></div><strong>Почистить
+                        фильтр</strong>
+                </label>
+                <label for="" v-if="!flag">
+                    <div class="btn" @click="clone()"><img src="../assets/i.webp" alt=""></div>
+                    <strong>Клонирование</strong>
+                </label>
+                <h2 v-if="flag">Клон живёт 8 секунд и не тратит энергию!!</h2>
+            </div>
         </div>
 
-
-        <div class="acvar">
-            <div class="fish" @click="GoClickFish()"> <img src="../assets/fish.jpg" alt=""></div>
-
-            <div class="fish_clone" @click="GoClickFishClone()" v-if="flag"> <img src="../assets/fish.jpg" alt=""></div>
-
-
-        </div>
-        <div class="flex">
-            <label for="">
-                <div class="btn" @click="eat()"><img src="../assets/eat.jpg" alt=""></div><strong>Покормить</strong>
-            </label>
-            <label for="">
-                <div class="btn" @click="clear()"><img src="../assets/filter.webp" alt=""></div><strong>Почистить
-                    фильтр</strong>
-            </label>
-            <label for="" v-if="!flag">
-                <div class="btn" @click="clone()"><img src="../assets/i.webp" alt=""></div><strong>Клонирование</strong>
-            </label>
-            <h2 v-if="flag">Клон живёт 8 секунд и не тратит энергию!!</h2>
-        </div>
     </main>
     <div class="modal" v-if="modal">
         <div class="the_end">
@@ -268,15 +274,22 @@ function restart() {
 
 <style scoped>
 main {
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: nowrap;
     gap: 20px;
+}
+
+.game{
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
 .acvar {
     min-width: 900px;
     min-height: 1000px;
     border: 1px solid black;
+    border-radius: 10px;
     background-image: url(../assets/fon.jpg);
     background-size: cover;
     background-repeat: no-repeat;
@@ -284,6 +297,7 @@ main {
     /* background-position: 0; */
     filter: brightness(v-bind(filter_fon + '%'));
     transition: 1.5s;
+
 }
 
 .fish {
@@ -358,6 +372,14 @@ main {
     border-radius: 10%;
     padding: 20px;
     box-shadow: 2px 2px 4px black;
+    max-width: 200px;
+}
+
+.stats{
+    max-width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 

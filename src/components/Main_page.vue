@@ -45,7 +45,7 @@ const route = useRoute()
         </div>
     </div>
 
-    <div class="flex" v-if="route.name == 'Main_page'">
+    <div class="flex">
         <RouterLink :to="{ name: 'tomofish' }">
             <div class="card">
                 <div class="img_fish">
