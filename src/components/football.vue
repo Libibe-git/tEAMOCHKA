@@ -18,33 +18,38 @@ const ballStyle = computed(() => ({
 
 // Главный цикл анимации
 function update() {
-    pos.x += speed.x;
-    pos.y += speed.y;
+    if (gend.value) {
+        pos.x += speed.x;
+        pos.y += speed.y;
 
-    // Отскок от левой и правой стенки
-    if (pos.x <= 0 || pos.x >= FIELD_WIDTH - BALL_SIZE) {
-        speed.x *= -1;
+        // Отскок от левой и правой стенки
+        if (pos.x <= 0 || pos.x >= FIELD_WIDTH - BALL_SIZE) {
+            speed.x *= -1;
+        }
+
+        // Отскок от верхней и нижней стенки
+        if (pos.y <= 0 || pos.y >= FIELD_HEIGHT - BALL_SIZE) {
+            speed.y *= -1;
+        }
+
+        // Проверка на гол (если мяч в районе ворот у правой стены)
+        // Ворота находятся справа (x > 450) и посередине по вертикали
+        if (pos.x > FIELD_WIDTH - BALL_SIZE - 10 && pos.y > 150 && pos.y < 250) {
+            goal();
+        }
+
+        requestAnimationFrame(update);
     }
-
-    // Отскок от верхней и нижней стенки
-    if (pos.y <= 0 || pos.y >= FIELD_HEIGHT - BALL_SIZE) {
-        speed.y *= -1;
-    }
-
-    // Проверка на гол (если мяч в районе ворот у правой стены)
-    // Ворота находятся справа (x > 450) и посередине по вертикали
-    if (pos.x > FIELD_WIDTH - BALL_SIZE - 10 && pos.y > 150 && pos.y < 250) {
-        goal();
-    }
-
-    requestAnimationFrame(update);
 }
 
 function kick() {
+    if (gend.value) {
+
     // Ускоряем мяч при ударе
     speed.x = Math.random() > 0.5 ? 5 : -5;
     speed.y = Math.random() * 10 - 5;
     message.value = "Хороший удар!";
+    }
 }
 
 function goal() {
@@ -57,6 +62,36 @@ function goal() {
     speed.y = 2;
 }
 
+//    console.log(timeend);
+
+// const time = ref('Осталось :', timeend);
+const timeLeft = ref(10); // время в секундах
+const gend = ref(true);
+
+
+const timeend = setInterval(() => {
+    if (timeLeft.value <= 0) {
+        clearInterval(timeend);
+        message.value = 'ИГРА ОКОНЧЕНА !'
+        gend.value = false
+        pos.x = 50
+        pos.y = 200
+        speed.x = 0;
+        speed.y = 0;
+        console.log("Время вышло!");
+    } else {
+        console.log(`Осталось: ${timeLeft} сек.`);
+        timeLeft.value--;
+    }
+}, 1000)
+
+// function victory() {
+
+
+
+
+// }
+
 onMounted(() => {
     update();
 });
@@ -66,7 +101,8 @@ onMounted(() => {
     <div class="game-container">
         <h2>Счет: {{ score }}</h2>
         <p>{{ message }}</p>
-        
+        <p>Осталось времени : {{ timeLeft }}</p>
+
         <button @click="kick" class="kick-btn">УДАР!</button>
 
         <div class="pole">
@@ -114,9 +150,25 @@ onMounted(() => {
             </div>
         </div>
     </div>
+
+    <div class="modal" v-if="!gend">
+        <div>
+            
+        </div>
+    </div>
 </template>
 
 <style scoped>
+.modal{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #6bcf8b40;
+    color: rgb(0, 0, 0);
+}
+
 .game-container {
     display: flex;
     flex-direction: column;
@@ -172,12 +224,13 @@ onMounted(() => {
     border-right: none;
     position: absolute;
     right: 0;
-    top: 150px; /* По центру вертикали */
+    top: 150px;
+    /* По центру вертикали */
     display: flex;
     flex-wrap: wrap;
 }
 
-.setka{
+.setka {
     width: 4px;
     height: 4px;
     border: 2px solid rgba(95, 95, 95, 0.644);

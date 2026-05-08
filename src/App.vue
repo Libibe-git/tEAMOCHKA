@@ -36,52 +36,55 @@ const route = useRoute()
             </div>
         </RouterLink>
     </header>
-    <div v-if="route.name == 'Main_page'">
-        <div>
-            <h1>Добро пожаловать, приятной игры</h1>
+    <main>
+        <div v-if="route.name == 'Main_page'">
+            <div>
+                <h1>Добро пожаловать, приятной игры</h1>
+            </div>
+
+            <div class="text_contain">
+                <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться
+                    игрой.
+                    Выбирай своё приключение на сегодня!»</p>
+            </div>
         </div>
 
-        <div class="text_contain">
-            <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться игрой.
-                Выбирай своё приключение на сегодня!»</p>
+        <div class="flex" v-if="route.name == 'Main_page'">
+            <RouterLink :to="{ name: 'tomofish' }">
+                <div class="card">
+                    <div class="img_fish">
+                    </div>
+                    <div class="opisanie-t">Томогочи-fish</div>
+                </div>
+            </RouterLink>
+            <RouterLink :to="{ name: 'pin_pong' }">
+                <div class="card">
+                    <div class="img_ping">
+                    </div>
+                    <div class="opisanie-p">Пин-Понг</div>
+                </div>
+            </RouterLink>
+            <RouterLink :to="{ name: 'football' }">
+                <div class="card">
+                    <div class="img_football"></div>
+                    <div class="opisanie-f">Футик</div>
+
+                </div>
+
+            </RouterLink>
         </div>
-    </div>
 
-    <div class="flex" v-if="route.name == 'Main_page'">
-        <RouterLink :to="{ name: 'tomofish' }">
-            <div class="card">
-                <div class="img_fish">
-                </div>
-                <div class="opisanie-t">Томогочи-fish</div>
-            </div>
-        </RouterLink>
-        <RouterLink :to="{ name: 'pin_pong' }">
-            <div class="card">
-                <div class="img_ping">
-                </div>
-                <div class="opisanie-p">Пин-Понг</div>
-            </div>
-        </RouterLink>
-        <RouterLink :to="{ name: 'football' }">
-            <div class="card">
-                <div class="img_football"></div>
-                <div class="opisanie-f">Футик</div>
+        <RouterView></RouterView>
+    </main>
 
-            </div>
 
-        </RouterLink>
-    </div>
-
-    <RouterView></RouterView>
-
-    <!-- <footer>
+    <footer>
         <div class="list_row">
             <div class="lisr_column">
                 <p>Контакты:</p>
                 <ol>
                     <li>Elizaveta F group 9ISP-232</li>
                     <li>Pavel S group 9ISP-232</li>
-                    <li>Kira Ch group 9ISP-232</li>
                 </ol>
             </div>
 
@@ -92,20 +95,34 @@ const route = useRoute()
 
         </div>
 
-    </footer> -->
+    </footer>
 
 </template>
 
 <style scoped>
 footer {
     /* width: 100%; */
-    min-height: 150px;
+    /* min-height: 100px; */
     background-color: rgb(206, 206, 206);
-    position: fixed;
+    /* position: fixed;
     left: 0;
     bottom: 0;
-    width: 100%;
+    width: 100%; */
     /* margin-top: 50px; */
+
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    /* position: absolute; */
+    min-height: 10%;
+    min-width: 100vw;
+    margin: 0;
+    /* bottom: -1000px; */
+    /* left: 0; */
+    /* right: 0; */
+    /* margin-top: 20px; */
+    /* color: white; */
 }
 
 .list_row {
@@ -237,5 +254,12 @@ h2 {
 
 .text_contain {
     margin-bottom: 40px;
+}
+
+main{
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }
 </style>
