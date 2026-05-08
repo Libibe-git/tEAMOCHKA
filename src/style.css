@@ -59,12 +59,13 @@ button:focus-visible {
 }
 
 #app {
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 ;
   /* padding: 2rem; */
   text-align: center;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 @media (prefers-color-scheme: light) {
@@ -80,6 +81,11 @@ button:focus-visible {
   }
 }
 
-main{
-  min-height: 100hv;
+main {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0 auto;
 }

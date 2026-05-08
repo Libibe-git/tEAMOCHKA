@@ -111,7 +111,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <div class="game-container" v-if="gend">
+    <div class="game-container" >
         <div class="g_score">
             <h2>Счет: {{ score }}</h2>
             <p>{{ message }}</p>
@@ -169,14 +169,17 @@ onMounted(() => {
 
     <div class="modal" v-if="!gend">
         <div class="v_modal">
-            <h1>Игра окончена !</h1>
-            <div class="table">
-                <p class="modal_score">Итоговый счёт : {{ score }}</p>
+            <div class="black">
+                <h1>Игра окончена !</h1>
+                <div class="table">
+                    <p class="modal_score">Итоговый счёт : {{ score }}</p>
+                </div>
+                <div class="modal_btn">
+                    <button class="btn_modal" @click="restart()">Начать сначала</button>
+                    <button class="btn_modal" @click="router.push({ name: 'Main_page' })">Выйти в главное меню</button>
+                </div>
             </div>
-            <div class="modal_btn">
-                <button class="btn_modal" @click="restart()">Начать сначала</button>
-                <button class="btn_modal" @click="router.push({name: 'Main_page'})">Выйти в главное меню</button>
-            </div>
+
 
         </div>
     </div>
@@ -210,6 +213,8 @@ p {
 .v_modal {
     color: white;
     background-color: #2ed573;
+    background-image: url(../assets/img/pole.jpg);
+    background-size: cover;
     width: 500px;
     height: 350px;
     display: flex;
@@ -217,6 +222,13 @@ p {
     border: 0px solid white;
     border-radius: 10px;
 
+}
+
+.black {
+    width: 100%;
+    height: 100%;
+    background: #000000a0;
+    border-radius: 2%;
 }
 
 .modal_score {
@@ -251,9 +263,10 @@ p {
 .game-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     font-family: sans-serif;
+    gap: 10%;
 }
 
 .kick-btn {
@@ -272,8 +285,8 @@ p {
 }
 
 .pole {
-    width: 500px;
-    height: 500px;
+    min-width: 500px;
+    min-height: 500px;
     border: 5px solid #2ed573;
     background-color: #7bed9f;
     position: relative;

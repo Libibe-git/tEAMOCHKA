@@ -192,4 +192,9 @@ setInterval(go, 8)
     left: 45%;
     border-radius: 20%;
 }
+
+main{
+    display: flex;
+    justify-content: center;
+}
 </style>

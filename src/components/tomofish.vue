@@ -255,7 +255,8 @@ setInterval(GoFish, 8000);
 
 <style scoped>
 main {
-    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     gap: 20px;
 }
 
