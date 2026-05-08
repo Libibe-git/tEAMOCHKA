@@ -40,6 +40,7 @@ function end_timer() {
     clearInterval(end_time_interval.value)
     end_time_interval.value = ''
     modal.value = true
+    // clearInterval(start_game)
 }
 
 
@@ -193,8 +194,20 @@ function GoFish() {
     // console.log(fish_x.value + random_x.value);
 }
 
-setInterval(GoFish, 8000);
+const start_game = setInterval(GoFish, 8000);
 
+function restart() {
+    filter_bar.value = 0
+    eat_bar.value = 100
+    check()
+    modal.value = false
+    filter_text.value = ''
+    eat_text.value = ''
+    fish_x.value = 400;
+    fish_y.value = 200;
+    clear()
+}
+// setInterval(() => { console.log(end_time.value) }, 1000);
 </script>
 
 <template>
@@ -247,7 +260,7 @@ setInterval(GoFish, 8000);
     <div class="modal" v-if="modal">
         <div class="the_end">
             <h1 class="suc_text">Игра окончена рыбка прожила {{ end_time }} секунд</h1>
-            <button @click="router.push({ name: tomofish })">Начать занаво</button>
+            <button @click="restart()">Начать занаво</button>
         </div>
 
     </div>
@@ -385,8 +398,36 @@ main {
     align-items: center;
 }
 
-.the_end{
+.the_end {
     max-width: 600px;
     height: 400px;
+    color: rgb(0, 255, 106);
+    background-color: rgba(216, 213, 213, 0.932);
+    background-image: url(../assets/fon.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10%;
+    box-shadow: 4px -14px 14px rgba(0, 0, 0, 0.637);
+
+}
+
+
+.the_end button {
+    width: 150px;
+    height: 150px;
+    border-radius: 100%;
+    color: black;
+    font-size: 20px;
+    transition: 1s;
+    box-shadow: 4px 14px 14px rgba(0, 0, 0, 0.637);
+}
+
+.the_end button:hover {
+    background-color: aqua;
+    transform: translate(10px, 10px);
 }
 </style>
