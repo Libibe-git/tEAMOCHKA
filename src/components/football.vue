@@ -1,6 +1,8 @@
 <script setup>
 import { computed, reactive, ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 // Настройки игры
 const FIELD_WIDTH = 500;
 const FIELD_HEIGHT = 500;
@@ -18,9 +20,12 @@ const ballStyle = computed(() => ({
 
 // Главный цикл анимации
 function update() {
+
     if (gend.value) {
         pos.x += speed.x;
         pos.y += speed.y;
+
+
 
         // Отскок от левой и правой стенки
         if (pos.x <= 0 || pos.x >= FIELD_WIDTH - BALL_SIZE) {
@@ -68,42 +73,53 @@ function goal() {
 const timeLeft = ref(10); // время в секундах
 const gend = ref(true);
 
+function timer() {
+    const timeend = setInterval(() => {
+        if (timeLeft.value <= 0) {
+            clearInterval(timeend);
+            message.value = 'ИГРА ОКОНЧЕНА !'
+            gend.value = false
+            pos.x = 50
+            pos.y = 200
+            speed.x = 0;
+            speed.y = 0;
 
-const timeend = setInterval(() => {
-    if (timeLeft.value <= 0) {
-        clearInterval(timeend);
-        message.value = 'ИГРА ОКОНЧЕНА !'
-        gend.value = false
-        pos.x = 50
-        pos.y = 200
-        speed.x = 0;
-        speed.y = 0;
-        console.log("Время вышло!");
-    } else {
-        console.log(`Осталось: ${timeLeft} сек.`);
-        timeLeft.value--;
-    }
-}, 1000)
-
-// function victory() {
-
-
+            console.log("Время вышло!");
+        } else {
+            console.log(`Осталось: ${timeLeft} сек.`);
+            timeLeft.value--;
+        }
+    }, 1000)
+}
 
 
-// }
+function restart() {
+    gend.value = true
+    timeLeft.value = 10
+    timer()
+    update()
+    speed.x = 2
+    speed.y = 2
+    score.value = 0;
+
+}
 
 onMounted(() => {
     update();
+    timer();
 });
 </script>
 
 <template>
-    <div class="game-container">
-        <h2>Счет: {{ score }}</h2>
-        <p>{{ message }}</p>
-        <p>Осталось времени : {{ timeLeft }}</p>
+    <div class="game-container" v-if="gend">
+        <div class="g_score">
+            <h2>Счет: {{ score }}</h2>
+            <p>{{ message }}</p>
+            <p>Осталось времени : {{ timeLeft }}</p>
 
-        <button @click="kick" class="kick-btn">УДАР!</button>
+            <button @click="kick" class="kick-btn">УДАР!</button>
+        </div>
+
 
         <div class="pole">
             <!-- Мяч -->
@@ -158,8 +174,8 @@ onMounted(() => {
                 <p class="modal_score">Итоговый счёт : {{ score }}</p>
             </div>
             <div class="modal_btn">
-                <button class="btn_modal">Начать сначала</button>
-                <button class="btn_modal">Выйти в главное меню</button>
+                <button class="btn_modal" @click="restart()">Начать сначала</button>
+                <button class="btn_modal" @click="router.push({name: 'Main_page'})">Выйти в главное меню</button>
             </div>
 
         </div>
@@ -167,6 +183,17 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.g_score {
+    display: flex;
+    flex-direction: column;
+
+}
+
+p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
 .modal {
     position: fixed;
     top: 0;
@@ -203,19 +230,19 @@ onMounted(() => {
     padding-left: 50px;
 }
 
-.modal_btn{
+.modal_btn {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     margin-top: 20px;
 }
 
-.btn_modal{
+.btn_modal {
     color: white;
     background-color: #00693f;
 }
 
-.btn_modal:hover{
+.btn_modal:hover {
     background-color: #008c54;
     border: 1px solid white;
     transform: 2s;
@@ -223,7 +250,8 @@ onMounted(() => {
 
 .game-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-evenly;
     align-items: center;
     font-family: sans-serif;
 }
