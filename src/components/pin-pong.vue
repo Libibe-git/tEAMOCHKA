@@ -14,7 +14,7 @@ let index = 0
 
 function rColor() {
     if (route.name == 'pin_pong') {
-        let spisok = ref(['#00693f', '#008c54', '#2ed573', '#7bed9f'])
+        let spisok = ref(['rgb(52, 0, 86)', 'rgb(69, 0, 114)', 'rgb(25, 0, 72)', 'rgb(34, 0, 96)'])
         styles.value = spisok.value[index]
 
     } else {
@@ -137,11 +137,11 @@ setInterval(go, 8)
 </script>
 
 <template>
-    <main>
+    <main class="flex_col">
         <h1>Ping-Pong Ultra</h1>
         <div class="pole" tabindex="0" autofocus @keydown.arrow-up.prevent="moveLeftPlatformUp"
             @keydown.arrow-down.prevent="moveLeftPlatformDown" @keydown.w.prevent="moveRightPlatformUp"
-            @keydown.s.prevent="moveRightPlatformDown">
+            @keydown.s.prevent="moveRightPlatformDown" @keydown.ц.prevent="moveRightPlatformUp" @keydown.ы.prevent="moveRightPlatformDown">
             <div class="platforma" :style="{ top: Lplat }">
             </div>
 
@@ -163,6 +163,12 @@ setInterval(go, 8)
 </template>
 
 <style scoped>
+.flex_col {
+    display: flex;
+    flex-direction: column;
+    margin-top: -100px;
+}
+
 h1 {
     color: v-bind(styles);
     font-family: fantasy;
@@ -182,6 +188,11 @@ h1 {
     overflow: hidden;
     border-radius: 1%;
     box-shadow: 4px 10px 18px black;
+
+
+
+
+    color: rgb(34, 0, 96);
 }
 
 .crug {
@@ -230,7 +241,7 @@ h1 {
     border-radius: 20%;
 }
 
-main{
+main {
     display: flex;
     justify-content: center;
 }
