@@ -1,7 +1,8 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
+const route = useRoute()
 const router = useRouter()
 
 const fish_x = ref(400);
@@ -33,6 +34,32 @@ onMounted(() => {
     end_time_interval.value = setInterval(() => { end_time.value++ }, 1000)
 
 })
+
+
+const styles = ref('#dd8c8c')
+let index = 0
+
+function rColor() {
+    if (route.name == 'tomofish') {
+        let spisok = ref(['orange', 'blue', 'green', 'grey'])
+        styles.value = spisok.value[index]
+
+    } else {
+        styles.value = 'black'
+
+    }
+
+    // console.log(spisok.value[index]);
+    if (index < 2) {
+        index = index + 1
+
+    } else {
+        index = 0
+    }
+
+}
+
+setInterval(rColor, 1000)
 
 
 
@@ -277,6 +304,10 @@ main {
     flex-direction: column;
     flex-wrap: nowrap;
     gap: 20px;
+}
+
+h1{
+    color: v-bind(styles);
 }
 
 .game{

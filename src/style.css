@@ -83,9 +83,9 @@ button:focus-visible {
 
 main {
     min-height: 100vh;
-    display: flex;
+    /* display: flex;
     align-items: center;
     justify-content: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
     margin: 0 auto;
 }

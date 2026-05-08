@@ -32,7 +32,7 @@ setInterval(rColor, 1000)
 const route = useRoute()
 </script>
 <template>
-
+    
     <div class="welcome">
         <div>
             <h1>Добро пожаловать, приятной игры</h1>
@@ -64,7 +64,6 @@ const route = useRoute()
             <div class="card">
                 <div class="img_football"></div>
                 <div class="opisanie-f">Футик</div>
-
             </div>
 
         </RouterLink>
@@ -83,19 +82,21 @@ const route = useRoute()
 }
 
 .card {
-    width: 280px;
-    min-height: 300px;
+    width: 385px;
+    min-height: 350px;
     border: 1px solid grey;
     border-radius: 10%;
     padding: 0;
     overflow: hidden;
     box-shadow: 2px 2px 10px black;
+    font-size: 20px;
 }
 
 .card:hover {
-    width: 320px;
+    width: 520px;
     /* transform: translate(-10px, -10px); */
     transition: 1.6s;
+    box-shadow: 0 20px 20px rgb(104, 104, 104);
 }
 
 .img_fish {
@@ -164,4 +165,5 @@ const route = useRoute()
 .text_contain {
     margin-bottom: 40px;
 }
+
 </style>
