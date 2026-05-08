@@ -89,7 +89,7 @@ const route = useRoute()
     padding: 0;
     overflow: hidden;
     box-shadow: 2px 2px 10px black;
-    font-size: 20px;
+    font-size: 28px;
 }
 
 .card:hover {
