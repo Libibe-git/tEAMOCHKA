@@ -45,10 +45,10 @@ function update() {
 function kick() {
     if (gend.value) {
 
-    // Ускоряем мяч при ударе
-    speed.x = Math.random() > 0.5 ? 5 : -5;
-    speed.y = Math.random() * 10 - 5;
-    message.value = "Хороший удар!";
+        // Ускоряем мяч при ударе
+        speed.x = Math.random() > 0.5 ? 5 : -5;
+        speed.y = Math.random() * 10 - 5;
+        message.value = "Хороший удар!";
     }
 }
 
@@ -152,21 +152,73 @@ onMounted(() => {
     </div>
 
     <div class="modal" v-if="!gend">
-        <div>
-            
+        <div class="v_modal">
+            <h1>Игра окончена !</h1>
+            <div class="table">
+                <p class="modal_score">Итоговый счёт : {{ score }}</p>
+            </div>
+            <div class="modal_btn">
+                <button class="btn_modal">Начать сначала</button>
+                <button class="btn_modal">Выйти в главное меню</button>
+            </div>
+
         </div>
     </div>
 </template>
 
 <style scoped>
-.modal{
+.modal {
     position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
-    background-color: #6bcf8b40;
+    background-color: #00000054;
     color: rgb(0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.v_modal {
+    color: white;
+    background-color: #2ed573;
+    width: 500px;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    border: 0px solid white;
+    border-radius: 10px;
+
+}
+
+.modal_score {
+    color: white;
+    font-size: 30px;
+}
+
+.table {
+    display: flex;
+    align-items: start;
+    padding-left: 50px;
+}
+
+.modal_btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-top: 20px;
+}
+
+.btn_modal{
+    color: white;
+    background-color: #00693f;
+}
+
+.btn_modal:hover{
+    background-color: #008c54;
+    border: 1px solid white;
+    transform: 2s;
 }
 
 .game-container {

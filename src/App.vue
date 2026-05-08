@@ -11,7 +11,7 @@ function rColor() {
         let spisok = ref(['orange', 'blue', 'green', 'grey'])
         styles.value = spisok.value[index]
 
-    }else{
+    } else {
         styles.value = 'black'
 
     }
@@ -47,40 +47,40 @@ const route = useRoute()
             <h1>Добро пожаловать, приятной игры</h1>
         </div>
 
-            <div class="text_contain">
-                <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться
-                    игрой.
-                    Выбирай своё приключение на сегодня!»</p>
+        <div class="text_contain">
+            <p class="text">«Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто насладиться
+                игрой.
+                Выбирай своё приключение на сегодня!»</p>
+        </div>
+    </div>
+
+    <div class="flex" v-if="route.name == 'Main_page'">
+        <RouterLink :to="{ name: 'tomofish' }">
+            <div class="card">
+                <div class="img_fish">
+                </div>
+                <div class="opisanie-t">Томогочи-fish</div>
             </div>
-        </div>
-
-        <div class="flex" v-if="route.name == 'Main_page'">
-            <RouterLink :to="{ name: 'tomofish' }">
-                <div class="card">
-                    <div class="img_fish">
-                    </div>
-                    <div class="opisanie-t">Томогочи-fish</div>
+        </RouterLink>
+        <RouterLink :to="{ name: 'pin_pong' }">
+            <div class="card">
+                <div class="img_ping">
                 </div>
-            </RouterLink>
-            <RouterLink :to="{ name: 'pin_pong' }">
-                <div class="card">
-                    <div class="img_ping">
-                    </div>
-                    <div class="opisanie-p">Пин-Понг</div>
-                </div>
-            </RouterLink>
-            <RouterLink :to="{ name: 'football' }">
-                <div class="card">
-                    <div class="img_football"></div>
-                    <div class="opisanie-f">Футик</div>
+                <div class="opisanie-p">Пин-Понг</div>
+            </div>
+        </RouterLink>
+        <RouterLink :to="{ name: 'football' }">
+            <div class="card">
+                <div class="img_football"></div>
+                <div class="opisanie-f">Футик</div>
 
-                </div>
+            </div>
 
-            </RouterLink>
-        </div>
+        </RouterLink>
+    </div>
 
-        <RouterView></RouterView>
-    </main>
+    <RouterView></RouterView>
+    
 
 
     <footer>
@@ -261,7 +261,7 @@ h2 {
     margin-bottom: 40px;
 }
 
-main{
+main {
     min-height: 100vh;
     display: flex;
     align-items: center;
