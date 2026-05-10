@@ -165,20 +165,30 @@ setInterval(go, 6)
 
     <div class="modal" v-if="!flag">
         <div class="v_model">
+            <div class="black">
             <h1>Конец Игры !</h1>
             <p>Итоговый счёт {{ countL }} : {{ countR }}</p>
             <div class="model_btn">
                 <button class="btn1">Играть</button>
                 <button class="btn1" @click="router.push({ name: 'Main_page' })">На главную</button>
+                </div>
             </div>
         </div>
+
     </div>
 
 
 </template>
 
 <style scoped>
-.model {
+.black {
+    width: 100%;
+    height: 100%;
+    background: #000000a0;
+    border-radius: 2%;
+}
+
+.modal {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -190,6 +200,7 @@ setInterval(go, 6)
     align-items: center;
 }
 
+
 .v_model {
     background-color: rgb(0, 0, 59);
     color: white;
@@ -199,6 +210,7 @@ setInterval(go, 6)
     flex-direction: column;
     border: 0px solid white;
     border-radius: 10px;
+    background-image: url(../assets/fon_ping.avif);
 }
 
 .model_btn {
