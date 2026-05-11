@@ -66,19 +66,18 @@ button:focus-visible {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  background-image: url(assets/img/fon_main.webp);
+  background-size: cover;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+
+#black {
+    min-width: 100vw;
+    min-height: 100vh;
+    background: #00000074;
+    border-radius: 2%;
+    /* position: fixed; */
+    /* top: 0; */
 }
 
 main {
