@@ -30,6 +30,8 @@ const end_time = ref(0)
 const end_time_interval = ref()
 const modal = ref(false)
 
+const start_clone = ref('');
+
 onMounted(() => {
     end_time_interval.value = setInterval(() => { end_time.value++ }, 1000)
 
@@ -100,13 +102,14 @@ function check() {
 
     if (eat_bar.value == 0 && filter_bar.value == 100) {
         end_timer()
+        
     }
 }
 
 function clone() {
-    flag.value = !flag.value
-
-    const timer = setTimeout(() => { flag.value = !flag.value }, 8000)
+    flag.value = !flag.value;
+    start_clone.value = setInterval(GoFishClone, 6000);
+    const timer = setTimeout(() => { flag.value = false; clearInterval(start_clone.value) }, 30000)
     // console.log(flag.value);
 
 }
@@ -130,20 +133,35 @@ function clear() {
 function GoClickFishClone() {
     random_x.value = Math.random() * 200 - 150
     random_y.value = Math.random() * 200 - 150
+    random_a.value = Math.random() * 15 - 10
 
-    if ((fish_x_clone.value + random_x.value) <= 900 && (fish_x_clone.value + random_x.value) >= 0) {
-        fish_x_clone.value += random_x.value
+    if (eat_bar.value != 0) {
+        eat_bar.value -= 10
 
-    } else {
-        fish_x_clone.value = 100
+        if (filter_bar.value == 100) {
+            random_x.value = Math.random() * 20 - 15
+            random_y.value = Math.random() * 20 - 15
+        }
+
+        if ((fish_x_clone.value + random_x.value) <= 900 && (fish_x_clone.value + random_x.value) >= 0) {
+            fish_x_clone.value += random_x.value
+
+        } else {
+            fish_x.value = 400
+        }
+
+        if ((pos_a.value + random_a.value) <= 100 && (pos_a.value + random_a.value) >= 0) {
+            pos_a.value += random_a.value
+        }
+
+        if ((fish_y_clone.value + random_y.value) <= 1000 && (fish_y_clone.value + random_y.value) >= 0) {
+            fish_y_clone.value += random_y.value
+        } else {
+            fish_y_clone.value = 600
+        }
     }
 
-    if ((fish_y_clone.value + random_y.value) <= 1000 && (fish_y_clone.value + random_y.value) >= 0) {
-        fish_y_clone.value += random_y.value
-    } else {
-        fish_y_clone.value = 100
-    }
-
+    check()
 }
 
 function GoClickFish() {
@@ -221,6 +239,47 @@ function GoFish() {
     // console.log(fish_x.value + random_x.value);
 }
 
+function GoFishClone() {
+    random_x.value = Math.random() * 200 - 150
+    random_y.value = Math.random() * 200 - 150
+    random_a.value = Math.random() * 15 - 10
+
+
+    if (filter_bar.value != 100) {
+        filter_bar.value += 10
+        filter_fon.value -= 9
+    } else {
+        random_x.value = Math.random() * 20 - 15
+        random_y.value = Math.random() * 20 - 15
+    }
+
+    if (eat_bar.value != 0) {
+        eat_bar.value -= 10
+
+
+        if ((fish_x_clone.value + random_x.value) <= 900 && (fish_x_clone.value + random_x.value) >= 0) {
+            fish_x_clone.value += random_x.value
+
+        } else {
+            fish_x_clone.value = 400
+        }
+
+        if ((pos_a.value + random_a.value) <= 100 && (pos_a.value + random_a.value) >= 0) {
+            pos_a.value += random_a.value
+        }
+
+        if ((fish_y_clone.value + random_y.value) <= 1000 && (fish_y_clone.value + random_y.value) >= 0) {
+            fish_y_clone.value += random_y.value
+        } else {
+            fish_y_clone.value = 600
+        }
+    }
+
+    check()
+    // console.log(fish_y.value + random_y.value);
+    // console.log(fish_x.value + random_x.value);
+}
+
 const start_game = setInterval(GoFish, 8000);
 
 function restart() {
@@ -233,6 +292,11 @@ function restart() {
     fish_x.value = 400;
     fish_y.value = 200;
     clear()
+    clearInterval(start_clone.value)
+    if (flag.value) {
+        flag.value = !flag.value
+    }
+    end_time_interval.value = setInterval(() => { end_time.value++ }, 1000)
 }
 // setInterval(() => { console.log(end_time.value) }, 1000);
 </script>
@@ -241,7 +305,7 @@ function restart() {
 
     <main>
         <div>
-            <h1>Томогочи-fish</h1>
+            <h1>Томогочи-fish(BETA)</h1>
         </div>
         <div class="game">
             <div class="stats">
@@ -268,7 +332,7 @@ function restart() {
             <div class="acvar">
                 <div class="fish" @click="GoClickFish()"> <img src="../assets/fish.jpg" alt=""></div>
 
-                <div class="fish_clone" @click="GoClickFishClone()" v-if="flag"> <img src="../assets/fish.jpg" alt="">
+                <div class="fish_clone" @click="GoClickFishClone()" v-if="flag"> <img src="../assets/fish2.jpg" alt="">
                 </div>
 
 
@@ -283,9 +347,9 @@ function restart() {
                 </label>
                 <label for="" v-if="!flag">
                     <div class="btn" @click="clone()"><img src="../assets/i.webp" alt=""></div>
-                    <strong>Клонирование</strong>
+                    <strong>Звонок другу</strong>
                 </label>
-                <h2 v-if="flag">Клон живёт 8 секунд и не тратит энергию!!</h2>
+                <h2 v-if="flag">Друг приплывает на 30 секунд<br> и они едят в 2 раза больше</h2>
             </div>
         </div>
 
@@ -293,7 +357,7 @@ function restart() {
     <div class="modal" v-if="modal">
         <div class="the_end">
             <h1 class="suc_text">Игра окончена рыбка прожила {{ end_time }} секунд</h1>
-            <button @click="restart()">Начать занаво</button>
+            <button @click="restart()" class="end_btn">Начать занаво</button>
         </div>
 
     </div>
@@ -478,14 +542,19 @@ h1{
     width: 150px;
     height: 150px;
     border-radius: 100%;
-    color: black;
+    color: rgb(255, 255, 255);
     font-size: 20px;
     transition: 1s;
     box-shadow: 4px 14px 14px rgba(0, 0, 0, 0.637);
+    background-color: rgb(255, 116, 2);
+    
 }
 
 .the_end button:hover {
     background-color: aqua;
     transform: translate(10px, 10px);
+    color: rgb(0, 0, 0);
+
 }
+
 </style>
