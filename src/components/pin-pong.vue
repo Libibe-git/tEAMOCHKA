@@ -223,7 +223,7 @@ setInterval(go, 6)
 .btn1 {
     max-height: 42px;
     transition: 1s;
-
+    background-color: aliceblue;    
 }
 
 .btn1:hover {

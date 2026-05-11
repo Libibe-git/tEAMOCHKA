@@ -370,6 +370,8 @@ h1{
 .flex {
     margin-top: 20px;
     flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
     display: flex;
     gap: 40px;
 }

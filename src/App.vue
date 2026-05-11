@@ -33,20 +33,22 @@ const route = useRoute()
 </script>
 
 <template>
-    <header>
-        <RouterLink :to="{ name: 'Main_page' }">
-            <div class="logo">
-                <h2>Mini-Games</h2>
-                <img src="./assets/logo.jpg" alt="">
+    <div id="black">
 
-            </div>
-        </RouterLink>
-    </header>
-    <main>
-        <RouterView></RouterView>
+        <header>
+            <RouterLink :to="{ name: 'Main_page' }">
+                <div class="logo">
+                    <h2>Mini-Games</h2>
+                    <img src="./assets/logo.jpg" alt="">
 
-    </main>
+                </div>
+            </RouterLink>
+        </header>
+        <main>
+            <RouterView></RouterView>
 
+        </main>
+    </div>
     <footer>
         <div class="list_row">
             <div class="lisr_column">
@@ -84,10 +86,10 @@ footer {
     flex-wrap: wrap;
     align-items: center;
     /* position: absolute; */
-    min-height: 10%;
+    min-height: 15%;
     min-width: 100vw;
     margin: 0;
-    margin-top: 10%;
+    /* margin-top: 10%; */
 
 }
 
@@ -138,7 +140,7 @@ h2 {
     font-size: 40px;
 }
 
-main{
+main {
     display: flex;
     flex-wrap: wrap;
     max-width: 100vw;
