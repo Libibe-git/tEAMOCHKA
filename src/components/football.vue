@@ -51,8 +51,6 @@ setInterval(update, 10)
 
 function kick() {
     if (gend.value) {
-
-        // Ускоряем мяч при ударе
         speed.x = Math.random() > 0.5 ? 5 : -5;
         speed.y = Math.random() * 10 - 5;
         // message.value = "Хороший удар!";
@@ -62,7 +60,7 @@ function kick() {
 function goal() {
     score.value++;
     // message.value = "ГООООЛ!!!";
-    // Сбрасываем мяч в центр
+    // Сбрасываем мяч 
     pos.x = 50;
     pos.y = 200;
     speed.x = 4;
@@ -72,7 +70,7 @@ function goal() {
 //    console.log(timeend);
 
 // const time = ref('Осталось :', timeend);
-const timeLeft = ref(10); // время в секундах
+const timeLeft = ref(30); 
 const gend = ref(true);
 
 function timer() {
@@ -95,7 +93,7 @@ function timer() {
 
 function restart() {
     gend.value = true
-    timeLeft.value = 10
+    timeLeft.value = 30
     timer()
     update()
     speed.x = 4
@@ -150,7 +148,7 @@ setInterval(rColor, 1000)
             <div class="game-container">
                 <div class="g_score">
                     <h2>Счет: {{ score }}</h2>
-                    <p>{{ message }}</p>
+                    <!-- <p>{{ message }}</p> -->
                     <p>Осталось времени : {{ timeLeft }}</p>
 
                     <button @click="kick" class="kick-btn">УДАР!</button>
