@@ -76,7 +76,7 @@ const route = useRoute()
 <style scoped>
 footer {
     background-color: rgb(27, 83, 1);
-    border: 2px solid rgb(15, 150, 3);
+    border-top: 2px solid rgb(15, 150, 3);
     /* display: flex;
     flex-direction: column;
     flex-wrap: wrap; */
