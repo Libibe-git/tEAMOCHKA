@@ -175,7 +175,7 @@ setInterval(go, 6)
         <div class="v_model">
             <div class="black">
             <h1>Конец Игры !</h1>
-            <p>Итоговый счёт {{ countL }} : {{ countR }}</p>
+            <p>Итоговый счёт {{ countR }} : {{ countL }}</p>
             <div class="model_btn">
                 <button class="btn1" @click="restart">Играть</button>
                 <button class="btn1" @click="router.push({ name: 'Main_page' })">На главную</button>
