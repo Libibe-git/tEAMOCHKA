@@ -296,6 +296,7 @@ function restart() {
     if (flag.value) {
         flag.value = !flag.value
     }
+    end_time.value = 0
     end_time_interval.value = setInterval(() => { end_time.value++ }, 1000)
 }
 // setInterval(() => { console.log(end_time.value) }, 1000);
@@ -330,7 +331,7 @@ function restart() {
 
 
             <div class="acvar">
-                <div class="fish" @click="GoClickFish()"> <img src="../assets/fish.jpg" alt=""></div>
+                <div class="fish" @click="GoClickFish()"> <img src="../assets/rich_fish.jpg" alt=""></div>
 
                 <div class="fish_clone" @click="GoClickFishClone()" v-if="flag"> <img src="../assets/fish2.jpg" alt="">
                 </div>
@@ -346,7 +347,7 @@ function restart() {
                         фильтр</strong>
                 </label>
                 <label for="" v-if="!flag">
-                    <div class="btn" @click="clone()"><img src="../assets/i.webp" alt=""></div>
+                    <div class="btn" @click="clone()"><img src="../assets/tel.webp" alt=""></div>
                     <strong>Звонок другу</strong>
                 </label>
                 <h2 v-if="flag">Друг приплывает на 30 секунд<br> и они едят в 2 раза больше</h2>
@@ -429,6 +430,7 @@ h1{
 
 .btn img {
     max-width: 150px;
+    min-width: 100%;
     height: 150px;
     margin: 0;
 }
@@ -472,6 +474,8 @@ h1{
     padding: 20px;
     box-shadow: 2px 2px 4px black;
     max-width: 200px;
+    background: #0000009c;
+
 }
 
 .stats{
