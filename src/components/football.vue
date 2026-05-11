@@ -99,7 +99,6 @@ function restart() {
     speed.x = 4
     speed.y = 4
     score.value = 0;
-
 }
 
 onMounted(() => {
@@ -121,7 +120,6 @@ function rColor() {
 
     }
 
-    // console.log(spisok.value[index]);
     if (index < 2) {
         index = index + 1
 
