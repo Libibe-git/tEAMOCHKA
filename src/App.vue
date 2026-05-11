@@ -51,17 +51,20 @@ const route = useRoute()
     </div>
     <footer>
         <div class="list_row">
-            <div class="lisr_column">
+
+            <div>
                 <p>Контакты:</p>
                 <ol>
                     <li>Elizaveta F group 9ISP-232</li>
                     <li>Pavel S group 9ISP-232</li>
                 </ol>
             </div>
-
             <div>
                 <p>Adress: Rustaveli Street 33</p>
             </div>
+
+
+
 
 
         </div>
@@ -72,24 +75,15 @@ const route = useRoute()
 
 <style scoped>
 footer {
-    /* width: 100%; */
-    /* min-height: 100px; */
-    background-color: rgb(206, 206, 206);
-    /* position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%; */
-    /* margin-top: 50px; */
-
-    display: flex;
+    background-color: rgb(27, 83, 1);
+    border: 2px solid rgb(15, 150, 3);
+    /* display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
     align-items: center;
-    /* position: absolute; */
     min-height: 15%;
     min-width: 100vw;
     margin: 0;
-    /* margin-top: 10%; */
 
 }
 
@@ -97,11 +91,13 @@ footer {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .list_column {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-wrap: wrap;
 }
 
@@ -127,6 +123,7 @@ a:hover {
     max-width: 500px;
     display: flex;
     gap: 10px;
+    color: aliceblue;
 }
 
 .logo img {
@@ -136,6 +133,10 @@ a:hover {
     border-radius: 100%;
 }
 
+.logo:hover {
+    color: cornflowerblue;
+}
+
 h2 {
     font-size: 40px;
 }
@@ -143,7 +144,9 @@ h2 {
 main {
     display: flex;
     flex-wrap: wrap;
-    max-width: 100vw;
+    min-width: 100vw;
     align-items: center;
+    justify-content: center;
+    padding-bottom: 5%;
 }
 </style>
