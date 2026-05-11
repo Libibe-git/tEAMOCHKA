@@ -101,7 +101,7 @@ const route = useRoute()
 }
 
 .img_fish {
-    background-image: url(../assets/fish.jpg);
+    background-image: url(../assets/rich_fish.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
