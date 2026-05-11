@@ -308,6 +308,8 @@ main {
 
 h1{
     color: v-bind(styles);
+    -webkit-text-stroke: 1px rgb(255, 255, 255);
+
 }
 
 .game{

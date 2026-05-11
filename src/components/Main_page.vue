@@ -32,7 +32,7 @@ setInterval(rColor, 1000)
 const route = useRoute()
 </script>
 <template>
-    
+
     <div class="welcome">
         <div>
             <h1>Добро пожаловать, приятной игры</h1>
@@ -90,6 +90,7 @@ const route = useRoute()
     overflow: hidden;
     box-shadow: 2px 2px 10px black;
     font-size: 28px;
+    background: rgba(240, 248, 255, 0.781);
 }
 
 .card:hover {
@@ -127,21 +128,21 @@ const route = useRoute()
 
 .opisanie-t {
     padding-top: 10px;
-    -webkit-text-stroke: 0.5px black;
+    -webkit-text-stroke: 1px rgb(253, 238, 151);
     color: rgb(255, 123, 0);
     letter-spacing: 2px;
 }
 
 .opisanie-p {
     padding-top: 10px;
-    -webkit-text-stroke: 0.5px black;
+    -webkit-text-stroke: 1px rgb(114, 176, 247);
     color: rgb(0, 48, 138);
     letter-spacing: 2px;
 }
 
 .opisanie-f {
     padding-top: 10px;
-    -webkit-text-stroke: 0.5px black;
+    -webkit-text-stroke: 1px rgb(69, 179, 5);
     color: rgb(55, 69, 0);
     letter-spacing: 2px;
 }
@@ -154,16 +155,20 @@ const route = useRoute()
     color: v-bind(styles);
     font-family: fantasy;
     letter-spacing: 2px;
+    -webkit-text-stroke: 1px rgb(255, 255, 255);
+
+
 }
 
 .text {
-    font-size: 26px;
+    font-size: 36px;
     font-family: fantasy;
-    letter-spacing: 0.5px;
+    letter-spacing: 1.5px;
+    padding: 2rem;
+    -webkit-text-stroke: 0.5px black;
 }
 
 .text_contain {
     margin-bottom: 40px;
 }
-
 </style>

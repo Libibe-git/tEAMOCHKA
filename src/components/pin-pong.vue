@@ -253,6 +253,7 @@ h1 {
     color: v-bind(styles);
     font-family: fantasy;
     letter-spacing: 2px;
+    -webkit-text-stroke: 1px rgb(255, 255, 255);
 
 }
 

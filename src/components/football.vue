@@ -150,7 +150,7 @@ setInterval(rColor, 1000)
             <div class="game-container">
                 <div class="g_score">
                     <h2>Счет: {{ score }}</h2>
-                    <p>{{ message }}</p>
+                    <!-- <p>{{ message }}</p> -->
                     <p>Осталось времени : {{ timeLeft }}</p>
 
                     <button @click="kick" class="kick-btn">УДАР!</button>
@@ -233,6 +233,7 @@ setInterval(rColor, 1000)
     color: v-bind(styles);
     font-family: fantasy;
     letter-spacing: 2px;
+    -webkit-text-stroke: 1px rgb(255, 255, 255);
 
 }
 
