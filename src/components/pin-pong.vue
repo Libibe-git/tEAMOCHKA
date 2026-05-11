@@ -46,6 +46,7 @@ const Rplat = computed(() => rplat.value + 'px')
 const flag = ref(true);
 
 
+
 function go() {
     if (flag.value) {
         if (goriz.horiz) {
@@ -97,7 +98,7 @@ function go() {
         }
     }
 
-    if (countL.value >= 1 || countR.value >= 1) {
+    if (countL.value >= 5 || countR.value >= 5) {
         flag.value = false
         leftnum.value = 300
         righttnum.value = 100
@@ -132,6 +133,13 @@ function moveRightPlatformDown() {
     if (rplat.value < 600) {
         rplat.value += 18
     }
+}
+
+function restart() {
+    flag.value = true
+    countL.value = 0
+    countR.value = 0
+    go()
 }
 
 
@@ -169,7 +177,7 @@ setInterval(go, 6)
             <h1>Конец Игры !</h1>
             <p>Итоговый счёт {{ countL }} : {{ countR }}</p>
             <div class="model_btn">
-                <button class="btn1">Играть</button>
+                <button class="btn1" @click="restart">Играть</button>
                 <button class="btn1" @click="router.push({ name: 'Main_page' })">На главную</button>
                 </div>
             </div>
