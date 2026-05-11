@@ -79,8 +79,8 @@ function check() {
     if (filter_bar.value >= 60) {
         filter_color.value = 'red'
         filter_text.value = 'Пока фильтр грязный рыбка плохо видит куда плыть!!!'
-
     }
+
     if (filter_bar.value < 30) {
         filter_color.value = '#12ce12'
     }
@@ -122,8 +122,8 @@ function eat() {
 function clear() {
     filter_bar.value = 0
     filter_fon.value = 100
+    filter_text.value = ''
     check()
-
 }
 
 
@@ -143,7 +143,6 @@ function GoClickFishClone() {
     } else {
         fish_y_clone.value = 100
     }
-
 }
 
 function GoClickFish() {
@@ -196,7 +195,6 @@ function GoFish() {
 
     if (eat_bar.value != 0) {
         eat_bar.value -= 10
-
 
         if ((fish_x.value + random_x.value) <= 900 && (fish_x.value + random_x.value) >= 0) {
             fish_x.value += random_x.value
