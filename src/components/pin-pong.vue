@@ -143,7 +143,7 @@ function restart() {
 }
 
 
-setInterval(go, 6)
+setInterval(go, 1)
 
 </script>
 
