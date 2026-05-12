@@ -1,13 +1,13 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 
-// ПРАВИЛЬНЫЙ импорт изображений через конструктор URL
-const flowerImg = new URL("/src/assets/i.png", import.meta.url).href;
-const beeImg = new URL("/src/assets/пчела.png", import.meta.url).href;
-const flower2Img = new URL("/src/assets/flower2.png", import.meta.url).href;
-const flower3Img = new URL("/src/assets/flower3.png", import.meta.url).href;
-const starImg = new URL("/src/assets/star.png", import.meta.url).href;
+// Импорт изображений
+import flowerImg from "/src/assets/i.png";
+import beeImg from "/src/assets/пчела.png";
+import flower2Img from "/src/assets/flower2.png";
+import flower3Img from "/src/assets/flower3.png";
+import starImg from "/src/assets/star.png";
 
 const route = useRoute();
 const router = useRouter();
@@ -31,7 +31,10 @@ const starMessage = ref("");
 // переменная для хранения таймера раунда
 let gameTimer = null;
 
-// конфигурация игры с настройками сложности - используем прямые ссылки на изображения
+// список всех возможных целей
+const targetTypes = ["flower", "bee", "flower2", "flower3"];
+
+// конфигурация игры
 const config = {
   winScore: 20,
   initialSpeed: 1300,
@@ -53,7 +56,7 @@ const config = {
   },
 };
 
-// текущая скорость игры которая будет уменьшаться
+// текущая скорость игры
 const gameSpeed = ref(config.initialSpeed);
 
 // функция очистки рекорда
@@ -240,7 +243,7 @@ onUnmounted(() => {
 
       <div class="target-hint">
         <h2>Твоя цель:</h2>
-        <span class="hint-emoji">{{ currentTargetType === 'flower' ? '🌸' : '🐝' }}</span>
+        <img :src="config.images[currentTargetType]" class="hint-image" />
       </div>
 
       <h3 class="score-display">Счет: {{ score }}</h3>
@@ -248,11 +251,11 @@ onUnmounted(() => {
       <img
         v-for="(item, index) in items"
         :key="index"
-        :class="['game-item', { 'star-item': item.type === 'star' }]"
+        :src="item.image"
+        class="game-item"
         :style="{ top: item.y + 'px', left: item.x + 'px' }"
         @click="itemClicked(item)"
-      >
-        {{ item.type === 'flower' ? '🌸' : item.type === 'bee' ? '🐝' : item.type === 'star' ? '⭐' : '🌼' }
+      />
     </div>
 
     <div v-else-if="currentStep === 'result'" class="game-overlay">
@@ -327,7 +330,7 @@ onUnmounted(() => {
 
 @keyframes bounce {
   from { transform: translateY(0); }
-  to { transform: translateY(-10px); }
+  to { transform: translateY(-5px); }
 }
 
 .score-display {
@@ -401,24 +404,16 @@ h1 {
   margin-bottom: 10px;
 }
 
-.dot {
+.game-item {
   width: 60px;
   height: 60px;
   position: absolute;
   cursor: pointer;
   transition: transform 0.1s;
 }
-.dot:hover {
-  transform: scale(1.2);
-}
 
-.star-mini {
-  animation: pulse-simple 0.4s infinite alternate;
-  z-index: 50;
-}
-@keyframes pulse-simple {
-  from { transform: scale(0.9); }
-  to { transform: scale(1.1); }
+.game-item:hover {
+  transform: scale(1.2);
 }
 
 button {
