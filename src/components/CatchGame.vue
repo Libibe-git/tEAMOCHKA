@@ -19,6 +19,7 @@ const score = ref(0);
 const highScore = ref(0);
 const items = ref([]);
 const currentTargetType = ref("flower");
+const starMessage = ref(""); // сообщение о звезде
 
 // переменная для хранения таймера раунда
 let gameTimer = null;
@@ -29,9 +30,11 @@ const config = {
   timeoutBuffer: 1000, gameWidth: 700, gameHeight: 450, minDistance: 75,
   headerHeight: 100, bonusChance: 0.15, starDuration: 2000,
   images: {
-    flower: "src/assets/i.png", bee: "src/assets/пчела.png",
-    flower2: "src/assets/flower2.png", flower3: "src/assets/flower3.png",
-    star: "src/assets/star.png",
+    flower: "/tEAMOCHKA/src/assets/i.png",
+    bee: "/tEAMOCHKA/src/assets/пчела.png",
+    flower2: "/tEAMOCHKA/src/assets/flower2.png",
+    flower3: "/tEAMOCHKA/src/assets/flower3.png",
+    star: "/tEAMOCHKA/src/assets/star.png",
   },
 };
 
@@ -59,6 +62,7 @@ const initGameParams = () => {
   lives.value = 3;
   gameSpeed.value = config.initialSpeed;
   items.value = [];
+  starMessage.value = "";
 };
 
 // запуск игры и смена url через роутер
@@ -81,6 +85,7 @@ const spawnNewRound = () => {
   
   clearTimeout(gameTimer);
   items.value = [];
+  starMessage.value = "";
   
   // случайно выбираем кого нужно ловить в этом раунде
   currentTargetType.value = Math.random() > 0.5 ? "flower" : "bee";
@@ -101,14 +106,20 @@ const spawnNewRound = () => {
 
   // шанс появления бонусной звезды на короткое время
   if (Math.random() < config.bonusChance) {
-    const starItem = generateItem("star");
+    let starItem, att = 0;
+    // звезда не должна накладываться на другие объекты
+    do { 
+      starItem = generateItem("star"); 
+      att++; 
+    } while (isOverlapping(starItem, items.value) && att < 50);
     items.value.push(starItem);
-    // убираем звезду если игрок не успел на нее нажать
-    setTimeout(() => { items.value = items.value.filter(i => i !== starItem); }, config.starDuration);
+    starMessage.value = "⭐ Звезда появилась! Поймай её для бонуса! ⭐";
+    // убираем звезду и сообщение если игрок не успел на нее нажать
+    setTimeout(() => { 
+      items.value = items.value.filter(i => i !== starItem);
+      starMessage.value = "";
+    }, config.starDuration);
   }
-
-  // запускаем таймер на проигрыш если игрок ничего не нажмет
-  gameTimer = setTimeout(() => endGame("Время вышло!", false), gameSpeed.value + config.timeoutBuffer);
 };
 
 // обработчик клика по любому объекту на поле
@@ -119,6 +130,7 @@ const itemClicked = (item) => {
     if (lives.value < 3) lives.value++;
     updateHighScore(score.value);
     items.value = items.value.filter(i => i !== item);
+    starMessage.value = "";
     return;
   }
 
@@ -134,7 +146,7 @@ const itemClicked = (item) => {
   score.value++;
   updateHighScore(score.value);
   
-  // проверка на победу.
+  // проверка на победу
   if (score.value >= config.winScore) return endGame("", true);
   
   // ускоряем игру с каждым правильным кликом
@@ -178,7 +190,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-    <div style="color: red; background: yellow;">CatchGame загружен!</div>
   <div class="game-container">
     
     <!-- 1 экран меню -->
@@ -199,6 +210,11 @@ onUnmounted(() => {
       <div class="lives-panel">
         <span class="lives-label">Жизни:</span>
         <span class="lives-icons">{{ "❤️".repeat(lives) }}</span>
+      </div>
+
+      <!-- сообщение о звезде -->
+      <div v-if="starMessage" class="star-message">
+        {{ starMessage }}
       </div>
 
       <!-- улучшенная подсказка: текст плюс картинка -->
@@ -228,7 +244,6 @@ onUnmounted(() => {
       
       <div class="record-wrapper">
         <p class="record-text">Рекорд: {{ highScore }}</p>
-        <!-- поменяли button на span для кнопки очистки чтобы избежать конфликта стилей команды -->
         <span v-if="highScore > 0" @click="resetRecord" class="clear-btn">🗑️</span>
       </div>
       
@@ -251,6 +266,29 @@ onUnmounted(() => {
   position: relative; 
   background-color: #ffffff;
   overflow: hidden;
+}
+
+/* стиль для сообщения о звезде */
+.star-message {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(45deg, gold, orange);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  animation: pulse 0.5s infinite alternate;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+}
+
+@keyframes pulse {
+  from { transform: translateX(-50%) scale(1); }
+  to { transform: translateX(-50%) scale(1.05); }
 }
 
 /* стили для подсказки цели вверху экрана */
