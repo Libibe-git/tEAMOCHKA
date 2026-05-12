@@ -23,15 +23,17 @@ const currentTargetType = ref("flower");
 // переменная для хранения таймера раунда
 let gameTimer = null;
 
-// конфигурация игры с настройками сложности и картинками
+// конфигурация игры с настройками сложности - используем прямые ссылки на изображения
 const config = {
   winScore: 20, initialSpeed: 1300, minSpeed: 500, speedIncrement: 50,
   timeoutBuffer: 1000, gameWidth: 700, gameHeight: 450, minDistance: 75,
   headerHeight: 100, bonusChance: 0.15, starDuration: 2000,
   images: {
-    flower: "src/assets/i.png", bee: "src/assets/пчела.png",
-    flower2: "src/assets/flower2.png", flower3: "src/assets/flower3.png",
-    star: "src/assets/star.png",
+    flower: "https://emojicdn.elk.sh/🌸",
+    bee: "https://emojicdn.elk.sh/🐝",
+    flower2: "https://emojicdn.elk.sh/🌻",
+    flower3: "https://emojicdn.elk.sh/🌼",
+    star: "https://emojicdn.elk.sh/⭐",
   },
 };
 
@@ -194,7 +196,7 @@ onUnmounted(() => {
     </div>
 
     <!-- 2 экран игры -->
-    <div v-else-if="currentStep === 'play'">
+    <div v-else-if="currentStep === 'play'" class="game-play-area">
       <div class="lives-panel">
         <span class="lives-label">Жизни:</span>
         <span class="lives-icons">{{ "❤️".repeat(lives) }}</span>
@@ -203,20 +205,21 @@ onUnmounted(() => {
       <!-- улучшенная подсказка: текст плюс картинка -->
       <div class="target-hint">
         <h2>Твоя цель:</h2>
-        <img :src="config.images[currentTargetType]" class="hint-image" />
+        <span class="hint-emoji">{{ currentTargetType === 'flower' ? '🌸' : '🐝' }}</span>
       </div>
 
       <h3 class="score-display">Счет: {{ score }}</h3>
       
       <!-- рендерим все объекты из массива items на поле -->
-      <img
+      <span
         v-for="(item, index) in items"
         :key="index"
-        :src="item.image"
-        :class="['dot', { 'star-mini': item.type === 'star' }]"
+        :class="['game-item', { 'star-item': item.type === 'star' }]"
         :style="{ top: item.y + 'px', left: item.x + 'px' }"
         @click="itemClicked(item)"
-      />
+      >
+        {{ item.type === 'flower' ? '🌸' : item.type === 'bee' ? '🐝' : item.type === 'star' ? '⭐' : '🌼' }}
+      </span>
     </div>
 
     <!-- 3 экран результатов -->
@@ -227,7 +230,6 @@ onUnmounted(() => {
       
       <div class="record-wrapper">
         <p class="record-text">Рекорд: {{ highScore }}</p>
-        <!-- поменяли button на span для кнопки очистки чтобы избежать конфликта стилей команды -->
         <span v-if="highScore > 0" @click="resetRecord" class="clear-btn">🗑️</span>
       </div>
       
@@ -241,8 +243,9 @@ onUnmounted(() => {
 <style scoped>
 /* основной контейнер игры */
 .game-container {
-    font-family: "Arial Black", Gadget, sans-serif;
-  width: 800px; height: 600px;
+  font-family: "Arial Black", Gadget, sans-serif;
+  width: 800px; 
+  height: 600px;
   border: 3px solid #9875dd; 
   border-radius: 15px;
   margin: 50px auto; 
@@ -250,6 +253,12 @@ onUnmounted(() => {
   position: relative; 
   background-color: #ffffff;
   overflow: hidden;
+}
+
+.game-play-area {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 /* стили для подсказки цели вверху экрана */
@@ -267,16 +276,14 @@ onUnmounted(() => {
   font-size: 1.8rem;
 }
 
-/* анимация прыжка для картинки-подсказки */
-.hint-image {
-  width: 50px;
-  height: 50px;
+.hint-emoji {
+  font-size: 50px;
   animation: bounce 0.6s infinite alternate;
 }
 
 @keyframes bounce {
   from { transform: translateY(0); }
-  to { transform: translateY(-5px); }
+  to { transform: translateY(-10px); }
 }
 
 .score-display {
@@ -310,14 +317,22 @@ onUnmounted(() => {
 
 /* панель жизней в правом верхнем углу */
 .lives-panel {
-  position: absolute; top: 15px; right: 20px;
-  background: #ffffff; padding: 10px 20px;
-  border-radius: 50px; border: 2px solid #000000;
+  position: absolute; 
+  top: 15px; 
+  right: 20px;
+  background: #ffffff; 
+  padding: 10px 20px;
+  border-radius: 50px; 
+  border: 2px solid #000000;
   box-shadow: 4px 4px 0px #9875dd;
-  z-index: 1000; display: flex; align-items: center; pointer-events: none;
+  z-index: 1000; 
+  display: flex; 
+  align-items: center; 
+  pointer-events: none;
 }
 
-.lives-label { font-weight: 900; 
+.lives-label { 
+  font-weight: 900; 
   margin-right: 10px; 
   font-size: 1.2rem; 
   text-transform: uppercase; 
@@ -331,7 +346,7 @@ onUnmounted(() => {
 .game-overlay {
   position: absolute; 
   inset: 0; 
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   display: flex; 
   flex-direction: column; 
   justify-content: center; 
@@ -341,35 +356,39 @@ onUnmounted(() => {
 }
 
 h1 { 
-  font-size: 3.5rem; 
+  font-size: 3rem; 
   color: #000; 
   margin-bottom: 10px; 
 }
 
 /* стили для кликабельных объектов на поле */
-.dot { 
-  width: 60px; 
-  height: 60px; 
+.game-item { 
+  font-size: 50px;
   position: absolute; 
   cursor: pointer; 
-  transition: transform 0.1s; 
+  transition: transform 0.1s;
+  user-select: none;
 }
-.dot:hover { 
+.game-item:hover { 
   transform: scale(1.2); 
 }
 
-/* специальная пульсирующая анимация для звезды */
-.star-mini { 
+/* специальная анимация для звезды */
+.star-item { 
   animation: pulse-simple 0.4s infinite alternate; 
   z-index: 50; 
 }
-@keyframes pulse-simple { from { transform: scale(0.9); } to { transform: scale(1.1); } }
+@keyframes pulse-simple { 
+  from { transform: scale(0.9); } 
+  to { transform: scale(1.1); } 
+}
 
 /* стили для кнопок меню */
 button {
   padding: 15px 35px; 
   font-size: 1.5rem; 
-  background: #9875dd; color: #fff;
+  background: #9875dd; 
+  color: #fff;
   border: none; 
   border-radius: 10px; 
   cursor: pointer; 
@@ -388,5 +407,5 @@ button.secondary {
   color: #666; 
   font-weight: normal; 
   margin: 0; 
-  }
+}
 </style>
