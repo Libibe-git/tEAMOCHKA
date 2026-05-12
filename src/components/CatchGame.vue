@@ -178,6 +178,7 @@ onUnmounted(() => {
 </script>
 
 <template>
+    <div style="color: red; background: yellow;">CatchGame загружен!</div>
   <div class="game-container">
     
     <!-- 1 экран меню -->
