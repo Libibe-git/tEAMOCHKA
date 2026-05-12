@@ -134,7 +134,7 @@ const itemClicked = (item) => {
   score.value++;
   updateHighScore(score.value);
   
-  // проверка на победу
+  // проверка на победу.
   if (score.value >= config.winScore) return endGame("", true);
   
   // ускоряем игру с каждым правильным кликом
