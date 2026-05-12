@@ -3,7 +3,7 @@ import Main_page from './components/Main_page.vue'
 import tomofish from './components/tomofish.vue'
 import pin_pong from './components/pin-pong.vue'
 import football from './components/football.vue'
-import CatchGame from './components/CatchGame.vue'
+import CatchGame from './components/CatchGame.vue' 
 
 
 const routes = [

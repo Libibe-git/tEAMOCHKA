@@ -1,6 +1,13 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, nextTick, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
+// ПРАВИЛЬНЫЙ импорт изображений через конструктор URL
+const flowerImg = new URL("/src/assets/i.png", import.meta.url).href;
+const beeImg = new URL("/src/assets/пчела.png", import.meta.url).href;
+const flower2Img = new URL("/src/assets/flower2.png", import.meta.url).href;
+const flower3Img = new URL("/src/assets/flower3.png", import.meta.url).href;
+const starImg = new URL("/src/assets/star.png", import.meta.url).href;
 
 const route = useRoute();
 const router = useRouter();
@@ -19,28 +26,37 @@ const score = ref(0);
 const highScore = ref(0);
 const items = ref([]);
 const currentTargetType = ref("flower");
+const starMessage = ref("");
 
 // переменная для хранения таймера раунда
 let gameTimer = null;
 
 // конфигурация игры с настройками сложности - используем прямые ссылки на изображения
 const config = {
-  winScore: 20, initialSpeed: 1300, minSpeed: 500, speedIncrement: 50,
-  timeoutBuffer: 1000, gameWidth: 700, gameHeight: 450, minDistance: 75,
-  headerHeight: 100, bonusChance: 0.15, starDuration: 2000,
+  winScore: 20,
+  initialSpeed: 1300,
+  minSpeed: 500,
+  speedIncrement: 50,
+  timeoutBuffer: 1000,
+  gameWidth: 700,
+  gameHeight: 450,
+  minDistance: 75,
+  headerHeight: 100,
+  bonusChance: 0.15,
+  starDuration: 2000,
   images: {
-    flower: "https://emojicdn.elk.sh/🌸",
-    bee: "https://emojicdn.elk.sh/🐝",
-    flower2: "https://emojicdn.elk.sh/🌻",
-    flower3: "https://emojicdn.elk.sh/🌼",
-    star: "https://emojicdn.elk.sh/⭐",
+    flower: flowerImg,
+    bee: beeImg,
+    flower2: flower2Img,
+    flower3: flower3Img,
+    star: starImg,
   },
 };
 
 // текущая скорость игры которая будет уменьшаться
 const gameSpeed = ref(config.initialSpeed);
 
-// функция очистки рекорда напрямую из памяти браузера
+// функция очистки рекорда
 const resetRecord = () => {
   localStorage.removeItem("flower_game_record");
   highScore.value = 0;
@@ -55,76 +71,92 @@ const updateHighScore = (currentScore) => {
   }
 };
 
-// сброс всех параметров перед началом новой игры
+// сброс всех параметров
 const initGameParams = () => {
   score.value = 0;
   lives.value = 3;
   gameSpeed.value = config.initialSpeed;
   items.value = [];
+  starMessage.value = "";
 };
 
-// запуск игры и смена url через роутер
+// запуск игры
 const startGame = async () => {
   initGameParams();
-  await router.push({ query: { step: 'play' } });
+  await router.push({ query: { step: "play" } });
   spawnNewRound();
 };
 
-// принудительная остановка игры и возврат в главное меню
+// остановка игры
 const stopAndGoToMenu = () => {
   clearTimeout(gameTimer);
-  router.push({ query: {} }); 
+  router.push({ query: {} });
 };
 
-// функция генерации нового раунда
+// генерация нового раунда
 const spawnNewRound = () => {
-  // защита от запуска если мы не на экране игры
   if (currentStep.value !== "play") return;
-  
+
   clearTimeout(gameTimer);
   items.value = [];
-  
-  // случайно выбираем кого нужно ловить в этом раунде
-  currentTargetType.value = Math.random() > 0.5 ? "flower" : "bee";
+  starMessage.value = "";
+
+  // случайно выбираем цель из всех возможных
+  const randomIndex = Math.floor(Math.random() * targetTypes.length);
+  currentTargetType.value = targetTypes[randomIndex];
   items.value.push(generateItem(currentTargetType.value));
 
-  // собираем массив картинок-обманок исключая текущую цель и звезду
-  const possibleDecoys = Object.keys(config.images).filter(t => t !== currentTargetType.value && t !== "star");
-  
-  // усложнение игры увеличиваем количество обманок в зависимости от счета
-  const decoyCount = score.value > 8 ? 3 : score.value > 4 ? 2 : score.value > 1 ? 1 : 0;
+  // обманки
+  const possibleDecoys = Object.keys(config.images).filter(
+    (t) => t !== currentTargetType.value && t !== "star"
+  );
 
-  // расставляем обманки на поле с проверкой наложения
-  possibleDecoys.slice(0, decoyCount).forEach(t => {
-    let d, att = 0;
-    do { d = generateItem(t); att++; } while (isOverlapping(d, items.value) && att < 50);
+  const decoyCount =
+    score.value > 8 ? 3 : score.value > 4 ? 2 : score.value > 1 ? 1 : 0;
+
+  possibleDecoys.slice(0, decoyCount).forEach((t) => {
+    let d,
+      att = 0;
+    do {
+      d = generateItem(t);
+      att++;
+    } while (isOverlapping(d, items.value) && att < 50);
     items.value.push(d);
   });
 
-  // шанс появления бонусной звезды на короткое время
+  // звезда
   if (Math.random() < config.bonusChance) {
-    const starItem = generateItem("star");
+    let starItem,
+      att = 0;
+    do {
+      starItem = generateItem("star");
+      att++;
+    } while (isOverlapping(starItem, items.value) && att < 50);
     items.value.push(starItem);
-    // убираем звезду если игрок не успел на нее нажать
-    setTimeout(() => { items.value = items.value.filter(i => i !== starItem); }, config.starDuration);
+    starMessage.value = "⭐ Звезда появилась! Поймай её для бонуса! ⭐";
+    setTimeout(() => {
+      items.value = items.value.filter((i) => i !== starItem);
+      starMessage.value = "";
+    }, config.starDuration);
   }
 
-  // запускаем таймер на проигрыш если игрок ничего не нажмет
-  gameTimer = setTimeout(() => endGame("Время вышло!", false), gameSpeed.value + config.timeoutBuffer);
+  gameTimer = setTimeout(
+    () => endGame("Время вышло!", false),
+    gameSpeed.value + config.timeoutBuffer
+  );
 };
 
-// обработчик клика по любому объекту на поле
+// обработчик клика
 const itemClicked = (item) => {
-  // если кликнули по звезде даем очки и восстанавливаем жизнь
   if (item.type === "star") {
     score.value += 5;
     if (lives.value < 3) lives.value++;
     updateHighScore(score.value);
-    items.value = items.value.filter(i => i !== item);
+    items.value = items.value.filter((i) => i !== item);
+    starMessage.value = "";
     return;
   }
 
-  // если кликнули по обманке отнимаем жизнь
   if (item.type !== currentTargetType.value) {
     lives.value--;
     if (lives.value <= 0) return endGame("Жизни закончились!", false);
@@ -132,39 +164,48 @@ const itemClicked = (item) => {
     return;
   }
 
-  // правильный клик увеличиваем счет
   score.value++;
   updateHighScore(score.value);
-  
-  // проверка на победу
+
   if (score.value >= config.winScore) return endGame("", true);
-  
-  // ускоряем игру с каждым правильным кликом
-  if (gameSpeed.value > config.minSpeed) gameSpeed.value -= config.speedIncrement;
+
+  if (gameSpeed.value > config.minSpeed)
+    gameSpeed.value -= config.speedIncrement;
   spawnNewRound();
 };
 
-// генератор случайных координат для объектов
+// генератор координат
 const generateItem = (type) => ({
-  type, image: config.images[type],
+  type,
+  image: config.images[type],
   x: Math.random() * config.gameWidth,
-  y: config.headerHeight + Math.random() * (config.gameHeight - config.headerHeight),
+  y:
+    config.headerHeight +
+    Math.random() * (config.gameHeight - config.headerHeight),
 });
 
-// проверка чтобы картинки не появлялись друг на друге
+// проверка наложения
 const isOverlapping = (n, e) => {
-  return e.some(i => Math.sqrt(Math.pow(n.x - i.x, 2) + Math.pow(n.y - i.y, 2)) < config.minDistance);
+  return e.some(
+    (i) =>
+      Math.sqrt(Math.pow(n.x - i.x, 2) + Math.pow(n.y - i.y, 2)) <
+      config.minDistance
+  );
 };
 
-// логика завершения игры и передачи параметров в роутер
+// завершение игры
 const endGame = (reason = "", isWin = false) => {
   clearTimeout(gameTimer);
-  router.push({ 
-    query: { step: 'result', status: isWin ? 'won' : 'lost', score: score.value, reason } 
+  router.push({
+    query: {
+      step: "result",
+      status: isWin ? "won" : "lost",
+      score: score.value,
+      reason,
+    },
   });
 };
 
-// при загрузке компонента читаем рекорд и проверяем состояние роутера
 onMounted(() => {
   highScore.value = parseInt(localStorage.getItem("flower_game_record") || "0");
   if (currentStep.value === "play") {
@@ -173,7 +214,6 @@ onMounted(() => {
   }
 });
 
-// обязательно чистим таймер если игрок ушел со страницы
 onUnmounted(() => {
   clearTimeout(gameTimer);
 });
@@ -181,37 +221,31 @@ onUnmounted(() => {
 
 <template>
   <div class="game-container">
-    
-    <!-- 1 экран меню -->
     <div v-if="currentStep === 'start'" class="game-overlay">
       <h1>Поймай их всех!</h1>
-      
       <div class="record-wrapper">
         <p>Лучший результат: <strong>{{ highScore }}</strong></p>
-        <button v-if="highScore > 0" @click="resetRecord" class="clear-btn" title="Очистить рекорд">
-          🗑️
-        </button>
+        <button v-if="highScore > 0" @click="resetRecord" class="clear-btn" title="Очистить рекорд">🗑️</button>
       </div>
       <button @click="startGame">Начать игру</button>
     </div>
 
-    <!-- 2 экран игры -->
-    <div v-else-if="currentStep === 'play'" class="game-play-area">
+    <div v-else-if="currentStep === 'play'">
       <div class="lives-panel">
         <span class="lives-label">Жизни:</span>
         <span class="lives-icons">{{ "❤️".repeat(lives) }}</span>
       </div>
 
-      <!-- улучшенная подсказка: текст плюс картинка -->
+      <div v-if="starMessage" class="star-message">{{ starMessage }}</div>
+
       <div class="target-hint">
         <h2>Твоя цель:</h2>
         <span class="hint-emoji">{{ currentTargetType === 'flower' ? '🌸' : '🐝' }}</span>
       </div>
 
       <h3 class="score-display">Счет: {{ score }}</h3>
-      
-      <!-- рендерим все объекты из массива items на поле -->
-      <span
+
+      <img
         v-for="(item, index) in items"
         :key="index"
         :class="['game-item', { 'star-item': item.type === 'star' }]"
@@ -222,46 +256,56 @@ onUnmounted(() => {
       </span>
     </div>
 
-    <!-- 3 экран результатов -->
     <div v-else-if="currentStep === 'result'" class="game-overlay">
-      <h1>{{ resultStatus === 'won' ? 'Победа!' : 'Проигрыш!' }}</h1>
+      <h1>{{ resultStatus === "won" ? "Победа!" : "Проигрыш!" }}</h1>
       <p v-if="resultStatus !== 'won'">{{ resultReason }}</p>
       <h2>Счет: {{ resultScore }}</h2>
-      
       <div class="record-wrapper">
         <p class="record-text">Рекорд: {{ highScore }}</p>
         <span v-if="highScore > 0" @click="resetRecord" class="clear-btn">🗑️</span>
       </div>
-      
       <button @click="startGame">Играть снова</button>
       <button class="secondary" @click="stopAndGoToMenu">В меню</button>
     </div>
-
   </div>
 </template>
 
 <style scoped>
-/* основной контейнер игры */
 .game-container {
   font-family: "Arial Black", Gadget, sans-serif;
-  width: 800px; 
+  width: 800px;
   height: 600px;
-  border: 3px solid #9875dd; 
+  border: 3px solid #9875dd;
   border-radius: 15px;
-  margin: 50px auto; 
+  margin: 50px auto;
   text-align: center;
-  position: relative; 
+  position: relative;
   background-color: #ffffff;
   overflow: hidden;
 }
 
-.game-play-area {
-  position: relative;
-  width: 100%;
-  height: 100%;
+.star-message {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(45deg, gold, orange);
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  animation: pulse 0.5s infinite alternate;
+  z-index: 200;
+  white-space: nowrap;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
 }
 
-/* стили для подсказки цели вверху экрана */
+@keyframes pulse {
+  from { transform: translateX(-50%) scale(1); }
+  to { transform: translateX(-50%) scale(1.05); }
+}
+
 .target-hint {
   display: flex;
   align-items: center;
@@ -276,8 +320,9 @@ onUnmounted(() => {
   font-size: 1.8rem;
 }
 
-.hint-emoji {
-  font-size: 50px;
+.hint-image {
+  width: 50px;
+  height: 50px;
   animation: bounce 0.6s infinite alternate;
 }
 
@@ -291,7 +336,6 @@ onUnmounted(() => {
   color: #333;
 }
 
-/* блок обертка для текста рекорда и корзины */
 .record-wrapper {
   display: flex;
   align-items: center;
@@ -301,7 +345,6 @@ onUnmounted(() => {
   color: #000;
 }
 
-/* стили для кастомной кнопки очистки */
 .clear-btn {
   cursor: pointer;
   font-size: 1.2rem;
@@ -315,97 +358,92 @@ onUnmounted(() => {
   transform: scale(1.2);
 }
 
-/* панель жизней в правом верхнем углу */
 .lives-panel {
-  position: absolute; 
-  top: 15px; 
+  position: absolute;
+  top: 15px;
   right: 20px;
-  background: #ffffff; 
+  background: #ffffff;
   padding: 10px 20px;
-  border-radius: 50px; 
+  border-radius: 50px;
   border: 2px solid #000000;
   box-shadow: 4px 4px 0px #9875dd;
-  z-index: 1000; 
-  display: flex; 
-  align-items: center; 
+  z-index: 1000;
+  display: flex;
+  align-items: center;
   pointer-events: none;
 }
 
-.lives-label { 
-  font-weight: 900; 
-  margin-right: 10px; 
-  font-size: 1.2rem; 
-  text-transform: uppercase; 
-  color:#000;
+.lives-label {
+  font-weight: 900;
+  margin-right: 10px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  color: #000;
 }
-.lives-icons { 
-  font-size: 1.4rem; 
+.lives-icons {
+  font-size: 1.4rem;
 }
 
-/* затемнение экрана для меню и результатов */
 .game-overlay {
-  position: absolute; 
-  inset: 0; 
-  background: rgba(255, 255, 255, 0.95);
-  display: flex; 
-  flex-direction: column; 
-  justify-content: center; 
-  align-items: center; 
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   z-index: 100;
-  color:#000;
+  color: #000;
 }
 
-h1 { 
-  font-size: 3rem; 
-  color: #000; 
-  margin-bottom: 10px; 
+h1 {
+  font-size: 3.5rem;
+  color: #000;
+  margin-bottom: 10px;
 }
 
-/* стили для кликабельных объектов на поле */
-.game-item { 
-  font-size: 50px;
-  position: absolute; 
-  cursor: pointer; 
+.dot {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  cursor: pointer;
   transition: transform 0.1s;
-  user-select: none;
 }
-.game-item:hover { 
-  transform: scale(1.2); 
-}
-
-/* специальная анимация для звезды */
-.star-item { 
-  animation: pulse-simple 0.4s infinite alternate; 
-  z-index: 50; 
-}
-@keyframes pulse-simple { 
-  from { transform: scale(0.9); } 
-  to { transform: scale(1.1); } 
+.dot:hover {
+  transform: scale(1.2);
 }
 
-/* стили для кнопок меню */
+.star-mini {
+  animation: pulse-simple 0.4s infinite alternate;
+  z-index: 50;
+}
+@keyframes pulse-simple {
+  from { transform: scale(0.9); }
+  to { transform: scale(1.1); }
+}
+
 button {
-  padding: 15px 35px; 
-  font-size: 1.5rem; 
-  background: #9875dd; 
+  padding: 15px 35px;
+  font-size: 1.5rem;
+  background: #9875dd;
   color: #fff;
-  border: none; 
-  border-radius: 10px; 
-  cursor: pointer; 
-  margin: 10px; 
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 10px;
   font-family: inherit;
 }
 
-button:hover { 
-  background: #a54f93; 
+button:hover {
+  background: #a54f93;
 }
-button.secondary { 
-  background: #555; 
+button.secondary {
+  background: #555;
 }
-.record-text { 
-  font-size: 1rem; 
-  color: #666; 
-  font-weight: normal; 
-  margin: 0; 
+.record-text {
+  font-size: 1rem;
+  color: #666;
+  font-weight: normal;
+  margin: 0;
 }
 </style>

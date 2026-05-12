@@ -1,69 +1,82 @@
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 
+const route = useRoute();
 const styles = ref("#dd8c8c");
 let index = 0;
+let intervalId = null;
 
 function rColor() {
-  if (route.name == "Main_page") {
-    let spisok = ref(["orange", "blue", "green", "grey"]);
-    styles.value = spisok.value[index];
+  if (route.name === "Main_page") {
+    let spisok = ["orange", "blue", "green", "grey"];
+    styles.value = spisok[index];
+    
+    if (index < 3) {
+      index = index + 1;
+    } else {
+      index = 0;
+    }
   } else {
     styles.value = "black";
   }
-
-  // console.log(spisok.value[index]);
-  if (index < 2) {
-    index = index + 1;
-  } else {
-    index = 0;
-  }
 }
 
-setInterval(rColor, 1000);
+onMounted(() => {
+  intervalId = setInterval(rColor, 1000);
+});
 
-const route = useRoute();
+onUnmounted(() => {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+});
 </script>
+
 <template>
-  <div class="welcome">
-    <div>
-      <h1>Добро пожаловать, приятной игры</h1>
+  <div>
+    <div class="welcome">
+      <div>
+        <h1>Добро пожаловать, приятной игры</h1>
+      </div>
+
+      <div class="text_contain">
+        <p class="text">
+          «Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто
+          насладиться игрой. Выбирай своё приключение на сегодня!»
+        </p>
+      </div>
     </div>
 
-    <div class="text_contain">
-      <p class="text">
-        «Сделай паузу! Наш сайт — это место, где можно забыть о делах и просто
-        насладиться игрой. Выбирай своё приключение на сегодня!»
-      </p>
+    <div class="flex">
+      <router-link :to="{ name: 'tomofish' }" class="card-link">
+        <div class="card">
+          <div class="img_fish"></div>
+          <div class="opisanie-t">Томогочи-fish</div>
+        </div>
+      </router-link>
+      
+      <router-link :to="{ name: 'pin_pong' }" class="card-link">
+        <div class="card">
+          <div class="img_ping"></div>
+          <div class="opisanie-p">Пин-Понг</div>
+        </div>
+      </router-link>
+      
+      <router-link :to="{ name: 'football' }" class="card-link">
+        <div class="card">
+          <div class="img_football"></div>
+          <div class="opisanie-f">Футик</div>
+        </div>
+      </router-link>
+      
+      <router-link :to="{ name: 'game' }" class="card-link">
+        <div class="card">
+          <div class="img_catch"></div>
+          <div class="opisanie-c">Попробуй поймать</div>
+        </div>
+      </router-link>
     </div>
-  </div>
-
-  <div class="flex">
-    <RouterLink :to="{ name: 'tomofish' }">
-      <div class="card">
-        <div class="img_fish"></div>
-        <div class="opisanie-t">Томогочи-fish</div>
-      </div>
-    </RouterLink>
-    <RouterLink :to="{ name: 'pin_pong' }">
-      <div class="card">
-        <div class="img_ping"></div>
-        <div class="opisanie-p">Пин-Понг</div>
-      </div>
-    </RouterLink>
-    <RouterLink :to="{ name: 'football' }">
-      <div class="card">
-        <div class="img_football"></div>
-        <div class="opisanie-f">Футик</div>
-      </div>
-    </RouterLink>
-        <RouterLink :to="{ name: 'game' }">
-            <div class="card">
-                <div class="img_catch"></div>
-                <div class="opisanie-c">Попробуй поймать</div>
-            </div>
-        </RouterLink>
   </div>
 </template>
 
@@ -74,8 +87,10 @@ const route = useRoute();
   gap: 20px;
   font-family: fantasy;
   min-width: 100vw;
-  /* margin-bottom: 700px; */
-  /* flex: 1 0 auto; */
+}
+
+.card-link {
+  text-decoration: none;
 }
 
 .card {
@@ -92,7 +107,6 @@ const route = useRoute();
 
 .card:hover {
   width: 520px;
-  /* transform: translate(-10px, -10px); */
   transition: 1.6s;
   box-shadow: 0 20px 20px rgb(104, 104, 104);
 }
@@ -122,6 +136,7 @@ const route = useRoute();
   height: 250px;
   background-position: 100%;
 }
+
 .img_catch {
   background-image: url(../assets/img_catch.png);
   background-size: cover;
@@ -139,6 +154,13 @@ const route = useRoute();
 }
 
 .opisanie-p {
+  padding-top: 10px;
+  -webkit-text-stroke: 1px rgb(114, 176, 247);
+  color: rgb(0, 48, 138);
+  letter-spacing: 2px;
+}
+
+.opisanie-f {
   padding-top: 10px;
   -webkit-text-stroke: 1px rgb(114, 176, 247);
   color: rgb(0, 48, 138);
