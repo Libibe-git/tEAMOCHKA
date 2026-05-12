@@ -252,8 +252,7 @@ onUnmounted(() => {
         :style="{ top: item.y + 'px', left: item.x + 'px' }"
         @click="itemClicked(item)"
       >
-        {{ item.type === 'flower' ? '🌸' : item.type === 'bee' ? '🐝' : item.type === 'star' ? '⭐' : '🌼' }}
-      </span>
+        {{ item.type === 'flower' ? '🌸' : item.type === 'bee' ? '🐝' : item.type === 'star' ? '⭐' : '🌼' }
     </div>
 
     <div v-else-if="currentStep === 'result'" class="game-overlay">
