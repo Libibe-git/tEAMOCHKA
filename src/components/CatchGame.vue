@@ -31,10 +31,7 @@ const starMessage = ref("");
 // переменная для хранения таймера раунда
 let gameTimer = null;
 
-// список всех возможных целей
-const targetTypes = ["flower", "bee", "flower2", "flower3"];
-
-// конфигурация игры с правильными путями
+// конфигурация игры с настройками сложности - используем прямые ссылки на изображения
 const config = {
   winScore: 20,
   initialSpeed: 1300,
@@ -243,7 +240,7 @@ onUnmounted(() => {
 
       <div class="target-hint">
         <h2>Твоя цель:</h2>
-        <img :src="config.images[currentTargetType]" class="hint-image" />
+        <span class="hint-emoji">{{ currentTargetType === 'flower' ? '🌸' : '🐝' }}</span>
       </div>
 
       <h3 class="score-display">Счет: {{ score }}</h3>
@@ -251,11 +248,12 @@ onUnmounted(() => {
       <img
         v-for="(item, index) in items"
         :key="index"
-        :src="item.image"
-        :class="['dot', { 'star-mini': item.type === 'star' }]"
+        :class="['game-item', { 'star-item': item.type === 'star' }]"
         :style="{ top: item.y + 'px', left: item.x + 'px' }"
         @click="itemClicked(item)"
-      />
+      >
+        {{ item.type === 'flower' ? '🌸' : item.type === 'bee' ? '🐝' : item.type === 'star' ? '⭐' : '🌼' }}
+      </span>
     </div>
 
     <div v-else-if="currentStep === 'result'" class="game-overlay">
@@ -330,7 +328,7 @@ onUnmounted(() => {
 
 @keyframes bounce {
   from { transform: translateY(0); }
-  to { transform: translateY(-5px); }
+  to { transform: translateY(-10px); }
 }
 
 .score-display {
